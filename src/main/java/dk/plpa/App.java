@@ -1,13 +1,8 @@
 package dk.plpa;
 
 
-import gnu.mapping.Environment;
-import kawa.standard.Scheme;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import static kawa.standard.Scheme.registerEnvironment;
+import dk.plpa.scheme.SchemeConfigurer;
+import dk.plpa.scheme.SchemeProcedure;
 
 
 public class App {
@@ -15,20 +10,17 @@ public class App {
 
     public static void main(String[] args) {
 
-        FileRead fileRead = new FileRead();
-        String stringToScheme = "";
+        SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/factorial.scm");
+        schemeConfigurer.configureSchemeEnvironment();
 
-        try {
-            stringToScheme = fileRead.readFile("src/main/scheme/dk.plpa/test.scm", StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SchemeProcedure factorial = new SchemeProcedure("factorial");
+        Object x = factorial.apply1(3);
 
-        registerEnvironment();
-        Environment.setCurrent(new Scheme().getEnvironment());
-        Object x;
-
-        x = Scheme.eval(stringToScheme, Environment.getCurrent());
+//        Object currentState = null;
+//        boolean animationRunning = true;
+//        while(animationRunning){
+//             Object updatedStated = updateRobotState(currentState);
+//        }
 
         System.out.println(x);
     }
