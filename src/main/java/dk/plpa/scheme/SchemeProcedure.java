@@ -18,4 +18,9 @@ public class SchemeProcedure extends Procedure1 {
         return result;
     }
 
+    @Override
+    public Object apply3(Object o, Object o1, Object o2) throws Throwable {
+        Object result = Scheme.eval("(" + this.name + " " + o + "" + o1 + " " + o2 + ")", Environment.getCurrent());
+        return result;
+    }
 }
