@@ -1,28 +1,25 @@
 package dk.plpa;
 
-
 import dk.plpa.scheme.SchemeConfigurer;
 import dk.plpa.scheme.SchemeProcedure;
 import gnu.math.IntNum;
 
+import java.util.List;
 
-public class App {
-
+public class App2 {
 
     public static void main(String[] args) {
 
         SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/factorial.scm");
         schemeConfigurer.configureSchemeEnvironment();
 
-        int currentState = 0;
-        while(currentState<10){
-            SchemeProcedure incrementProcedure = new SchemeProcedure("increment");
-            currentState = ((IntNum) incrementProcedure.apply1(currentState)).intValue();
-            System.out.println(currentState);
+        int initialState = 0;
+        SchemeProcedure incrementProcedure = new SchemeProcedure("incrementAtOnce");
+        List<IntNum> schemeResult = (List) incrementProcedure.apply1(initialState);
+
+        for(IntNum step : schemeResult){
+            System.out.println(step);
         }
+
     }
-
-
-
-
 }
