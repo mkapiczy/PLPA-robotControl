@@ -14,13 +14,10 @@ public class FileReader {
         try {
             try (BufferedReader br = new BufferedReader(new java.io.FileReader(path))) {
                 StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-
-                while (line != null) {
+                br.lines().forEach(line -> {
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                    line = br.readLine();
-                }
+                });
                 fileContent = sb.toString();
             }
         } catch (IOException e) {
