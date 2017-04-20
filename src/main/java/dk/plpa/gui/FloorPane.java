@@ -2,8 +2,9 @@ package dk.plpa.gui;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,23 +12,24 @@ import java.util.List;
 @Getter
 public class FloorPane extends GridPane {
 
+    @Setter(AccessLevel.NONE)
     private List<FloorRow> rows = new ArrayList<>();
+
 
     public void addFloorRow(FloorRow row) {
         rows.add(row);
-        fillGridPaneWithLastRowTiles();
+        addLastRowTilesToTheGridPane();
     }
 
-    private void fillGridPaneWithLastRowTiles() {
+    private void addLastRowTilesToTheGridPane() {
         int amountOfFloorRows = this.getRows().size();
-        int indexOfRowToBeAdded = amountOfFloorRows - 1;
-        FloorRow row = this.getRows().get(indexOfRowToBeAdded);
-        for (int j = 0; j < row.getNumberOfTiles(); j++) {
-            Tile tile = row.getTile(j);
-            Rectangle r = new Rectangle(20, 20, tile.getColor());
-            r.setStroke(Color.BLACK);
-            r.setStrokeWidth(1);
-            this.add(r, j, indexOfRowToBeAdded);
+        int indexOfLastRow = amountOfFloorRows - 1;
+        FloorRow row = this.getRows().get(indexOfLastRow);
+        for (int tileIndex = 0; tileIndex < row.getNumberOfTiles(); tileIndex++) {
+            Tile tile = row.getTile(tileIndex);
+            tile.setStroke(Color.BLACK);
+            tile.setStrokeWidth(1);
+            this.add(tile, tileIndex, indexOfLastRow);
         }
     }
 }

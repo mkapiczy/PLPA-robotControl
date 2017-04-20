@@ -47,7 +47,7 @@ public class FloorPaneMapper {
         FloorRow row = new FloorRow();
         for (String tileSign : tileSignList) {
             if (!tileSign.equals("")) {
-                Tile t = new Tile(mapTileSignToTheColor(tileSign));
+                Tile t = new Tile(20, 20, mapTileSignToTheColor(tileSign));
                 row.addTile(t);
             }
         }
