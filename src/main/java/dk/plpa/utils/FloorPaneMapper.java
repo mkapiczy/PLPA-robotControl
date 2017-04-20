@@ -1,7 +1,7 @@
 package dk.plpa.utils;
 
 
-import dk.plpa.gui.Floor;
+import dk.plpa.gui.FloorPane;
 import dk.plpa.gui.FloorRow;
 import dk.plpa.gui.Tile;
 import javafx.scene.paint.Color;
@@ -14,23 +14,23 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 
-public class FloorMapper {
+public class FloorPaneMapper {
 
-    private static final Logger log = Logger.getLogger(FloorMapper.class);
+    private static final Logger log = Logger.getLogger(FloorPaneMapper.class);
 
-    public static Floor readFloorStateFromStringRepresentation(String floorStructure) {
-        Floor floor = new Floor();
+    public static FloorPane readFloorStateFromStringRepresentation(String floorStructure) {
+        FloorPane floor = new FloorPane();
 
         try (BufferedReader br = new BufferedReader(new StringReader(floorStructure))) {
             br.lines().forEach(line -> {
                 line = removeUnnecessaryStringElementsFromLine(line);
                 if (StringUtils.isNotEmpty(line)) {
                     List<String> tileSignList = Arrays.asList(line.split("'"));
-                    floor.addRow(createFloorRowFromTileSignsList(tileSignList));
+                    floor.addFloorRow(createFloorRowFromTileSignsList(tileSignList));
                 }
             });
         } catch (IOException e) {
-            log.error("Exception while mapping floor string representation into Floor object", e);
+            log.error("Exception while mapping floor string representation into FloorPane object", e);
         }
 
         return floor;
