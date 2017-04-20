@@ -2,9 +2,9 @@ package dk.plpa;
 
 import dk.plpa.scheme.SchemeConfigurer;
 import dk.plpa.scheme.SchemeProcedure;
-import gnu.math.IntNum;
+import dk.plpa.utils.SchemeUtils;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class App2 {
 
@@ -13,13 +13,14 @@ public class App2 {
         SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/factorial.scm");
         schemeConfigurer.configureSchemeEnvironment();
 
-        int initialState = 0;
-        SchemeProcedure incrementProcedure = new SchemeProcedure("incrementAtOnce");
-        List<IntNum> schemeResult = (List) incrementProcedure.apply1(initialState);
+        SchemeProcedure loadProcedure = new SchemeProcedure("loadValues");
+        Integer[] array = {1, 2, 3, 4, 5};
 
-        for(IntNum step : schemeResult){
-            System.out.println(step);
-        }
+        loadProcedure.apply1(SchemeUtils.javaListToSchemeList(Arrays.asList(array)));
+
+        SchemeProcedure displayProcedure = new SchemeProcedure("printGlobalValues");
+        displayProcedure.apply0();
+
 
     }
 }

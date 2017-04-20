@@ -13,6 +13,11 @@ public class SchemeProcedure extends Procedure1 {
         this.name = name;
     }
 
+    public Object apply0() {
+        Object result = Scheme.eval("(" + this.name + ")", Environment.getCurrent());
+        return result;
+    }
+
     public Object apply1(Object arg1) {
         Object result = Scheme.eval("(" + this.name + " " + arg1 + ")", Environment.getCurrent());
         return result;
