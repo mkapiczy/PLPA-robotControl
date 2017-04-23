@@ -1,5 +1,7 @@
+(include "FloorPlan.scm")
+
 (define get-item
-    (lambda (2d-vct x y)
-        (vector-ref (vector-ref 2d-vct x) y)
+    (lambda (x y)
+        (vector-ref (vector-ref floorr x) y)
     )
 )

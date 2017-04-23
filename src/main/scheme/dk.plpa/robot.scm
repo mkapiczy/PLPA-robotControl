@@ -1,3 +1,5 @@
+(include "FloorUtil.scm")
+
 (define (robot x y direction errorCode)
   (letrec (
            (getX    (lambda () x))
@@ -5,7 +7,7 @@
            (getDirection (lambda () direction))
            (getErrorCode (lambda () errorCode))
            (moveForward (lambda ()
-                          (if (isMovementAllowed)
+                          (if (isMovementAllowed "FORWARD")
                               (robot
                                (getNextXPosition "FORWARD")
                                (getNextYPosition "FORWARD")
@@ -33,7 +35,7 @@
            (type-of (lambda () 'robot))
 
 
-           (getNextXPosition (lambda(movementDirection)
+           (getNextXPosition (lambda (movementDirection)
                                (if (eq? "FORWARD" movementDirection)
                                    (cond
                                      ((eq? "N" direction) x)
@@ -43,7 +45,7 @@
                                      )
                                    (x)
                                    )))
-           (getNextYPosition (lambda(movementDirection)
+           (getNextYPosition (lambda (movementDirection)
                                (if (eq? "FORWARD" movementDirection)
                                    (cond
                                      ((eq? "N" direction) (- y 1))
@@ -69,25 +71,37 @@
                                    )
                                ))
 
-           (isMovementAllowed (lambda ()
-                                #t
-                                )))
-    (lambda (message)
-      (cond ((eq? message 'getX) getX)
-            ((eq? message 'getY) getY)
-            ((eq? message 'getDirection)  getDirection)
-            ((eq? message 'moveForward)  moveForward)
-            ((eq? message 'turnRight)  turnRight)
-            ((eq? message 'turnLeft)  turnLeft)
-            ((eq? message 'type-of) type-of)
-            (else (error "Message not understood"))))
+           (isMovementAllowed (lambda (movementDirection)
+                                (
+                                   (if ((cond
+                                         ((eq? (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection)) "A") #t)
+                                         ((eq? (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection)) "P") #t)
+                                         ((eq? (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection)) "i") #t)
+                                         ((eq? (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection)) "o") #t)
+                                         ((eq? (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection)) "*") #t)
+                                         ))
+                                       #t
+                                       #f
+                                       ))))
+           )
+
+
+           (lambda (message)
+             (cond ((eq? message 'getX) getX)
+                   ((eq? message 'getY) getY)
+                   ((eq? message 'getDirection)  getDirection)
+                   ((eq? message 'moveForward)  moveForward)
+                   ((eq? message 'turnRight)  turnRight)
+                   ((eq? message 'turnLeft)  turnLeft)
+                   ((eq? message 'type-of) type-of)
+                   (else (error "Message not understood"))))
+           )
     )
-  )
 
 
 
 
-(define (send message object . args)
-  (let ((method (object message)))
-    (cond ((procedure? method) (apply method args))
-          (else (error "Error in method lookup " method)))))
+  (define (send message object . args)
+    (let ((method (object message)))
+      (cond ((procedure? method) (apply method args))
+            (else (error "Error in method lookup " method)))))
