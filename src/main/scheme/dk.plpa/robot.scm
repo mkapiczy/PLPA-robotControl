@@ -7,22 +7,31 @@
            (getDirection (lambda () direction))
            (getErrorCode (lambda () errorCode))
            (moveForward (lambda (amountOfSteps)
-                          (if (isMovementAllowed "FORWARD" amountOfSteps)
-                              (begin
-                                (display (string-append "Robot moved forward from " (number->string x) " " (number->string y) " to " (number->string (getNextXPosition "FORWARD" amountOfSteps)) " "  (number->string (getNextYPosition "FORWARD" amountOfSteps))))
-                                (robot
-                                 (getNextXPosition "FORWARD" amountOfSteps)
-                                 (getNextYPosition "FORWARD" amountOfSteps)
-                                 direction
-                                 errorCode))
-                              (begin
-                                (display (string-append "Movement forward from " (number->string x) " " (number->string y) " not allowed"))
-                                (robot
+                          (if (> amountOfSteps 0)
+                             (send 'moveForward (moveForwardOneStep) (- amountOfSteps 1))
+                             (robot
                                  x
                                  y
                                  direction
-                                 -1)))
-                          ))
+                                 errorCode)
+                          )))
+          (moveForwardOneStep (lambda()
+          (if (isMovementAllowed "FORWARD")
+              (begin
+                (display (string-append "Robot moved forward from " (number->string x) " " (number->string y) " to " (number->string (getNextXPosition "FORWARD")) " "  (number->string (getNextYPosition "FORWARD"))))
+                (robot
+                 (getNextXPosition "FORWARD")
+                 (getNextYPosition "FORWARD")
+                 direction
+                 errorCode))
+              (begin
+                (display (string-append "Movement forward from " (number->string x) " " (number->string y) " not allowed"))
+                (robot
+                 x
+                 y
+                 direction
+                 -1)))
+          ))
            (turnRight (lambda ()
                         (display (string-append "Robot turned right from " direction " to " (getNextDirection "RIGHT")))
                         (robot
@@ -41,22 +50,22 @@
            (type-of (lambda () 'robot))
 
 
-           (getNextXPosition (lambda (movementDirection amountOfSteps)
+           (getNextXPosition (lambda (movementDirection)
                                (if (equal? "FORWARD" movementDirection)
                                    (cond
                                      ((equal? "N" direction) x)
-                                     ((equal? "E" direction) (+ x amountOfSteps))
+                                     ((equal? "E" direction) (+ x 1))
                                      ((equal? "S" direction) x)
-                                     ((equal? "W" direction) (- x amountOfSteps))
+                                     ((equal? "W" direction) (- x 1))
                                      )
                                    x
                                    )))
-           (getNextYPosition (lambda (movementDirection amountOfSteps)
+           (getNextYPosition (lambda (movementDirection)
                                (if (equal? "FORWARD" movementDirection)
                                    (cond
-                                     ((equal? "N" direction) (- y amountOfSteps))
+                                     ((equal? "N" direction) (- y 1))
                                      ((equal? "E" direction) y)
-                                     ((equal? "S" direction) (+ y amountOfSteps))
+                                     ((equal? "S" direction) (+ y 1))
                                      ((equal? "W" direction) y)
                                      )
                                    y
@@ -77,13 +86,13 @@
                                    )
                                ))
 
-           (isMovementAllowed (lambda (movementDirection amountOfSteps)
+           (isMovementAllowed (lambda (movementDirection)
                                 (cond
-                                  ((equal? 'A (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
-                                  ((equal? 'P (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
-                                  ((equal? 'o (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
-                                  ((equal? '* (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
-                                  ((equal? 'i (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
+                                  ((equal? 'A (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'P (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'o (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? '* (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'i (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
                                   (else #f)
                                   )
                                 ))
