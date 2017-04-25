@@ -8,24 +8,30 @@
            (getErrorCode (lambda () errorCode))
            (moveForward (lambda ()
                           (if (isMovementAllowed "FORWARD")
-                              (robot
-                               (getNextXPosition "FORWARD")
-                               (getNextYPosition "FORWARD")
-                               direction
-                               errorCode)
-                              (robot
-                               x
-                               y
-                               direction
-                               -1))
+                              (begin
+                                (display (string-append "Robot moved forward from " (number->string x) " " (number->string y) " to " (number->string (getNextXPosition "FORWARD")) " "  (number->string (getNextYPosition "FORWARD"))))
+                                (robot
+                                 (getNextXPosition "FORWARD")
+                                 (getNextYPosition "FORWARD")
+                                 direction
+                                 errorCode))
+                              (begin
+                                (display (string-append "Movement forward from " (number->string x) " " (number->string y) " not allowed"))
+                                (robot
+                                 x
+                                 y
+                                 direction
+                                 -1)))
                           ))
            (turnRight (lambda ()
+                        (display (string-append "Robot turned right from " direction " to " (getNextDirection "RIGHT")))
                         (robot
                          x
                          y
                          (getNextDirection "RIGHT")
                          errorCode)))
            (turnLeft (lambda ()
+                       (display (string-append "Robot turned left from " direction " to " (getNextDirection "LEFT")))
                        (robot
                         x
                         y
@@ -72,35 +78,35 @@
                                ))
 
            (isMovementAllowed (lambda (movementDirection)
-            (cond
-              ((equal? 'A (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-              ((equal? 'P (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-              ((equal? 'o (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-              ((equal? '* (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-              ((equal? 'i (get-item (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-              (else #f)
-            )
-           ))
+                                (cond
+                                  ((equal? 'A (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'P (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'o (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? '* (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'i (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  (else #f)
+                                  )
+                                ))
            )
 
 
-           (lambda (message)
-             (cond ((eq? message 'getX) getX)
-                   ((eq? message 'getY) getY)
-                   ((eq? message 'getDirection)  getDirection)
-                   ((eq? message 'moveForward)  moveForward)
-                   ((eq? message 'turnRight)  turnRight)
-                   ((eq? message 'turnLeft)  turnLeft)
-                    ((eq? message 'getErrorCode)  getErrorCode)
-                   ((eq? message 'type-of) type-of)
-                   (else (error "Message not understood"))))
-           )
+    (lambda (message)
+      (cond ((eq? message 'getX) getX)
+            ((eq? message 'getY) getY)
+            ((eq? message 'getDirection)  getDirection)
+            ((eq? message 'moveForward)  moveForward)
+            ((eq? message 'turnRight)  turnRight)
+            ((eq? message 'turnLeft)  turnLeft)
+            ((eq? message 'getErrorCode)  getErrorCode)
+            ((eq? message 'type-of) type-of)
+            (else (error "Message not understood"))))
     )
+  )
 
 
 
 
-  (define (send message object . args)
-    (let ((method (object message)))
-      (cond ((procedure? method) (apply method args))
-            (else (error "Error in method lookup " method)))))
+(define (send message object . args)
+  (let ((method (object message)))
+    (cond ((procedure? method) (apply method args))
+          (else (error "Error in method lookup " method)))))
