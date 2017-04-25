@@ -6,13 +6,13 @@
            (getY    (lambda () y))
            (getDirection (lambda () direction))
            (getErrorCode (lambda () errorCode))
-           (moveForward (lambda ()
-                          (if (isMovementAllowed "FORWARD")
+           (moveForward (lambda (amountOfSteps)
+                          (if (isMovementAllowed "FORWARD" amountOfSteps)
                               (begin
-                                (display (string-append "Robot moved forward from " (number->string x) " " (number->string y) " to " (number->string (getNextXPosition "FORWARD")) " "  (number->string (getNextYPosition "FORWARD"))))
+                                (display (string-append "Robot moved forward from " (number->string x) " " (number->string y) " to " (number->string (getNextXPosition "FORWARD" amountOfSteps)) " "  (number->string (getNextYPosition "FORWARD" amountOfSteps))))
                                 (robot
-                                 (getNextXPosition "FORWARD")
-                                 (getNextYPosition "FORWARD")
+                                 (getNextXPosition "FORWARD" amountOfSteps)
+                                 (getNextYPosition "FORWARD" amountOfSteps)
                                  direction
                                  errorCode))
                               (begin
@@ -41,22 +41,22 @@
            (type-of (lambda () 'robot))
 
 
-           (getNextXPosition (lambda (movementDirection)
+           (getNextXPosition (lambda (movementDirection amountOfSteps)
                                (if (equal? "FORWARD" movementDirection)
                                    (cond
                                      ((equal? "N" direction) x)
-                                     ((equal? "E" direction) (+ x 1))
+                                     ((equal? "E" direction) (+ x amountOfSteps))
                                      ((equal? "S" direction) x)
-                                     ((equal? "W" direction) (- x 1))
+                                     ((equal? "W" direction) (- x amountOfSteps))
                                      )
                                    x
                                    )))
-           (getNextYPosition (lambda (movementDirection)
+           (getNextYPosition (lambda (movementDirection amountOfSteps)
                                (if (equal? "FORWARD" movementDirection)
                                    (cond
-                                     ((equal? "N" direction) (- y 1))
+                                     ((equal? "N" direction) (- y amountOfSteps))
                                      ((equal? "E" direction) y)
-                                     ((equal? "S" direction) (+ y 1))
+                                     ((equal? "S" direction) (+ y amountOfSteps))
                                      ((equal? "W" direction) y)
                                      )
                                    y
@@ -77,13 +77,13 @@
                                    )
                                ))
 
-           (isMovementAllowed (lambda (movementDirection)
+           (isMovementAllowed (lambda (movementDirection amountOfSteps)
                                 (cond
-                                  ((equal? 'A (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                                  ((equal? 'P (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                                  ((equal? 'o (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                                  ((equal? '* (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                                  ((equal? 'i (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                                  ((equal? 'A (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
+                                  ((equal? 'P (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
+                                  ((equal? 'o (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
+                                  ((equal? '* (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
+                                  ((equal? 'i (get-tile (getNextXPosition movementDirection amountOfSteps) (getNextYPosition movementDirection amountOfSteps))) #t)
                                   (else #f)
                                   )
                                 ))
