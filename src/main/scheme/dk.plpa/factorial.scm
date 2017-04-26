@@ -14,13 +14,4 @@
        (incrementAtOnceTail (+ i 1) (append r (list (+ i 1))))
         r))
 
-(define x '())
 
-(define (loadValues values)
-    (set! x values))
-
-(define (printGlobalValues)
-    (for-each (lambda (x)
-    (display x)
-    (newline))
-    x))
