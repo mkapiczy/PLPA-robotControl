@@ -1,4 +1,6 @@
 ;;Robot simulation
+(include "robot.scm")
+
 (define commands '())
 
 (define (loadCommands values)
@@ -10,21 +12,17 @@
     (newline))
     commands))
 
- #|
 (define robotState
       (lambda (init)
           (let ((state init))
-              (lambda (proc)
-                  (set! state (proc))
+              (lambda (proc steps)
+                  (set! state (proc state steps))
                     state))))
 
-(define (MoveForward noOfSteps)
-    (send 'moveForward (robotState) noOfSteps)
+(define (MoveForward state noOfSteps)
+    (send 'moveForward state noOfSteps)
 )
 
 (define r (robot 8 5 "S" 0 '()))
 
 (define step (robotState r))
-
-(step (MoveForward 2))
-|#
