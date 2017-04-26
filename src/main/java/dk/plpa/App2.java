@@ -4,13 +4,16 @@ import dk.plpa.scheme.SchemeConfigurer;
 import dk.plpa.scheme.SchemeProcedure;
 import dk.plpa.utils.SchemeUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class App2 {
 
     public static void main(String[] args) {
-
-        SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/factorial.scm");
+        List<String> files = new ArrayList<>();
+        files.add("src/main/scheme/dk.plpa/factorial.scm");
+        SchemeConfigurer schemeConfigurer = new SchemeConfigurer(files);
         schemeConfigurer.configureSchemeEnvironment();
 
         SchemeProcedure loadProcedure = new SchemeProcedure("loadValues");

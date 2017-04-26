@@ -4,8 +4,8 @@ package dk.plpa;
 import dk.plpa.gui.FloorPane;
 import dk.plpa.scheme.SchemeConfigurer;
 import dk.plpa.scheme.SchemeProcedure;
-import dk.plpa.utils.FileReader;
 import dk.plpa.utils.FloorPaneMapper;
+import gnu.lists.FVector;
 import gnu.math.IntNum;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -18,13 +18,22 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class App extends Application {
 
 
     public static void main(String[] args) {
+        List <String> schemeFiles = new ArrayList<>();
+        schemeFiles.add("src/main/scheme/dk.plpa/robot.scm");
+        schemeFiles.add("src/main/scheme/dk.plpa/FloorPlan.scm");
+        schemeFiles.add("src/main/scheme/dk.plpa/FloorUtil.scm");
+        schemeFiles.add("src/main/scheme/dk.plpa/factorial.scm");
 
-        SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/factorial.scm");
+        SchemeConfigurer schemeConfigurer = new SchemeConfigurer(schemeFiles);
         schemeConfigurer.configureSchemeEnvironment();
 
         launch(args);
@@ -33,7 +42,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage theStage) throws Exception {
-
         Group root = new Group();
         Scene scene = new Scene(root);
         theStage.setTitle("Robot Control");
@@ -41,7 +49,13 @@ public class App extends Application {
 
         Canvas canvas = new Canvas(512, 512);
 
-        FloorPane floor = FloorPaneMapper.readFloorStateFromStringRepresentation(FileReader.readFile("src/main/scheme/dk.plpa/FloorPlan.scm"));
+        SchemeProcedure floorProc = new SchemeProcedure("getFactoryFloor");
+        Object[] floorObj =((FVector) floorProc.apply0()).toArray();
+
+        List<List<String>> floorArr = convertFloorToLists(floorObj);
+
+        //FloorPane floor = FloorPaneMapper.readFloorStateFromStringRepresentation(FileReader.readFile("src/main/scheme/dk.plpa/FloorPlan.scm"));
+        FloorPane floor = FloorPaneMapper.readFloorStateFromList(floorArr);
         floor.setAlignment(Pos.CENTER);
         floor.setPadding(new Insets(25, 25, 25, 25));
 
@@ -79,6 +93,15 @@ public class App extends Application {
 
     }
 
+    private List<List<String>> convertFloorToLists(Object[] floorObj) {
+        List<List<String>> floorArr = new ArrayList<>();
+        for (Object aFloorObj : floorObj) {
+            List<Object> rowObj = (List<Object>) aFloorObj;
+            List<String> stringList = rowObj.stream().map(Object::toString).collect(Collectors.toList());
+            floorArr.add(stringList);
+        }
+        return floorArr;
+    }
 
 
     private void drawShapes(GraphicsContext gc, Integer i, int positionX, int yPosition) {

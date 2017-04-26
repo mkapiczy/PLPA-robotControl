@@ -36,6 +36,14 @@ public class FloorPaneMapper {
         return floor;
     }
 
+    public static FloorPane readFloorStateFromList(List<List<String>> floorStructure) {
+        FloorPane floor = new FloorPane();
+
+        floorStructure.forEach(row -> floor.addFloorRow(createFloorRowFromTileSignsList(row)));
+
+        return floor;
+    }
+
     private static String removeUnnecessaryStringElementsFromLine(String line) {
         line = StringUtils.deleteWhitespace(line);
         line = line.replace("(vector", "");

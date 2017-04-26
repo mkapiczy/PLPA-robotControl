@@ -1,4 +1,4 @@
-(include "FloorUtil.scm")
+;(include "FloorUtil.scm") ;UNCOMMENT THIS WHEN TESTING FROM PETIT INTERPRETER
 
 (define (robot x y direction errorCode carriedObject)
   (letrec (
@@ -126,25 +126,25 @@
 
     (isMovementAllowed (lambda (movementDirection)
                          (cond
-                           ((equal? 'A (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                           ((equal? 'P (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                           ((equal? 'o (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                           ((equal? '* (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
-                           ((equal? 'i (get-tile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                           ((equal? 'A (getTile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                           ((equal? 'P (getTile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                           ((equal? 'o (getTile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                           ((equal? '* (getTile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
+                           ((equal? 'i (getTile (getNextXPosition movementDirection) (getNextYPosition movementDirection))) #t)
                            (else #f)
                            )
                          ))
 
 
     (canPickObject (lambda ()
-                     (if (and (null? carriedObject) (equal? 'i (get-tile x y)))
+                     (if (and (null? carriedObject) (equal? 'i (getTile x y)))
                         #t
                         #f
                         )
                      ))
 
     (canDropObject (lambda ()
-                (if (and (not (null? carriedObject)) (equal? 'o (get-tile x y)))
+                (if (and (not (null? carriedObject)) (equal? 'o (getTile x y)))
                     #t
                     #f
                     )
