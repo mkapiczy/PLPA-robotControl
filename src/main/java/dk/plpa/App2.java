@@ -2,28 +2,30 @@ package dk.plpa;
 
 import dk.plpa.scheme.SchemeConfigurer;
 import dk.plpa.scheme.SchemeProcedure;
-import dk.plpa.utils.SchemeUtils;
+import dk.plpa.utils.CommandMapper;
+import dk.plpa.scheme.SchemeTypesMapper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class App2 {
 
     public static void main(String[] args) {
-        List<String> files = new ArrayList<>();
-        files.add("src/main/scheme/dk.plpa/factorial.scm");
-        SchemeConfigurer schemeConfigurer = new SchemeConfigurer(files);
+
+        SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/simulation.scm");
         schemeConfigurer.configureSchemeEnvironment();
 
-        SchemeProcedure loadProcedure = new SchemeProcedure("loadValues");
-        Integer[] array = {1, 2, 3, 4, 5};
+        SchemeProcedure loadProcedure = new SchemeProcedure("loadCommands");
 
-        loadProcedure.apply1(SchemeUtils.javaListToSchemeList(Arrays.asList(array)));
+        List<List<Object>> commands = CommandMapper.createACommandList();
+
+        String s = SchemeTypesMapper.javaListOfListToSchemeListOfPairs(commands);
+        loadProcedure.apply1(s);
 
         SchemeProcedure displayProcedure = new SchemeProcedure("printGlobalValues");
         displayProcedure.apply0();
 
 
     }
+
+
 }
