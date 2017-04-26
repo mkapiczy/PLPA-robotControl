@@ -27,13 +27,7 @@ public class App extends Application {
 
 
     public static void main(String[] args) {
-        List <String> schemeFiles = new ArrayList<>();
-        schemeFiles.add("src/main/scheme/dk.plpa/robot.scm");
-        schemeFiles.add("src/main/scheme/dk.plpa/FloorPlan.scm");
-        schemeFiles.add("src/main/scheme/dk.plpa/FloorUtil.scm");
-        schemeFiles.add("src/main/scheme/dk.plpa/factorial.scm");
-
-        SchemeConfigurer schemeConfigurer = new SchemeConfigurer(schemeFiles);
+        SchemeConfigurer schemeConfigurer = new SchemeConfigurer();
         schemeConfigurer.configureSchemeEnvironment();
 
         launch(args);
