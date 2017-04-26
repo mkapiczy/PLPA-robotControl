@@ -17,7 +17,7 @@ public class SchemeConfigurer {
         this.schemeFiles.add("src/main/scheme/dk.plpa/robot.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/FloorPlan.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/FloorUtil.scm");
-        this.schemeFiles.add("src/main/scheme/dk.plpa/factorial.scm");
+        this.schemeFiles.add("src/main/scheme/dk.plpa/simulation.scm");
     }
 
     public void configureSchemeEnvironment(){

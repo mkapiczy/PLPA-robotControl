@@ -1,5 +1,5 @@
 ;;Robot simulation
-(include "robot.scm")
+;;(include "robot.scm")
 
 (define commands '())
 
@@ -11,7 +11,7 @@
     (display commands)
     (newline))
     commands))
-
+#|
 (define robotState
       (lambda (init)
           (let ((state init))
@@ -27,4 +27,4 @@
 
 (define r (robot 8 5 "S" 0 '()))
 
-(define step (robotState r))
+(define step (robotState r))|#

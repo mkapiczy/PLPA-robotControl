@@ -11,7 +11,7 @@ public class App2 {
 
     public static void main(String[] args) {
 
-        SchemeConfigurer schemeConfigurer = new SchemeConfigurer("src/main/scheme/dk.plpa/simulation.scm");
+        SchemeConfigurer schemeConfigurer = new SchemeConfigurer();
         schemeConfigurer.configureSchemeEnvironment();
 
         SchemeProcedure loadProcedure = new SchemeProcedure("loadCommands");

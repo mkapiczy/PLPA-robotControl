@@ -4,52 +4,39 @@ package dk.plpa.utils;
 import dk.plpa.gui.FloorPane;
 import dk.plpa.gui.FloorRow;
 import dk.plpa.gui.Tile;
+import dk.plpa.scheme.SchemeProcedure;
+import gnu.lists.FVector;
 import javafx.scene.paint.Color;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FloorPaneMapper {
 
-    private static final Logger log = Logger.getLogger(FloorPaneMapper.class);
-
-    public static FloorPane readFloorStateFromStringRepresentation(String floorStructure) {
+    public static FloorPane getFloorStateFromScheme() {
         FloorPane floor = new FloorPane();
 
-        try (BufferedReader br = new BufferedReader(new StringReader(floorStructure))) {
-            br.lines().forEach(line -> {
-                line = removeUnnecessaryStringElementsFromLine(line);
-                if (StringUtils.isNotEmpty(line)) {
-                    List<String> tileSignList = Arrays.asList(line.split("'"));
-                    floor.addFloorRow(createFloorRowFromTileSignsList(tileSignList));
-                }
-            });
-        } catch (IOException e) {
-            log.error("Exception while mapping floor string representation into FloorPane object", e);
-        }
-
-        return floor;
-    }
-
-    public static FloorPane readFloorStateFromList(List<List<String>> floorStructure) {
-        FloorPane floor = new FloorPane();
-
+        SchemeProcedure floorProc = new SchemeProcedure("getFactoryFloor");
+        Object[] floorArrayRepresentation = ((FVector) floorProc.apply0()).toArray();
+        List<List<String>> floorStructure = convertFloorToListRepresentaton(floorArrayRepresentation);
         floorStructure.forEach(row -> floor.addFloorRow(createFloorRowFromTileSignsList(row)));
 
         return floor;
     }
 
-    private static String removeUnnecessaryStringElementsFromLine(String line) {
-        line = StringUtils.deleteWhitespace(line);
-        line = line.replace("(vector", "");
-        line = line.replace(")", "");
-        return line;
+
+    private static List<List<String>> convertFloorToListRepresentaton(Object[] floorArrayRepresentation) {
+        List<List<String>> floorListRepresentation = new ArrayList<>();
+
+        for (Object floorObj : floorArrayRepresentation) {
+            List<String> singleRowElements = ((List<Object>) floorObj).stream().map(Object::toString).collect(Collectors.toList());
+            floorListRepresentation.add(singleRowElements);
+        }
+
+        return floorListRepresentation;
     }
+
 
     private static FloorRow createFloorRowFromTileSignsList(List<String> tileSignList) {
         FloorRow row = new FloorRow();

@@ -9,12 +9,20 @@ import gnu.lists.FVector;
 import gnu.math.IntNum;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -36,27 +44,41 @@ public class App extends Application {
 
     @Override
     public void start(Stage theStage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root);
+        Group rootView = new Group();
+
+        Scene scene = new Scene(rootView);
         theStage.setTitle("Robot Control");
         theStage.setScene(scene);
 
-        Canvas canvas = new Canvas(512, 512);
+        FloorPane floor = createFloor();
 
-        SchemeProcedure floorProc = new SchemeProcedure("getFactoryFloor");
-        Object[] floorObj =((FVector) floorProc.apply0()).toArray();
+        Group animationView = new Group();
+        Canvas animationCanvas = new Canvas(512, 640);
+        setUpAnimationView(animationView, floor, animationCanvas);
 
-        List<List<String>> floorArr = convertFloorToLists(floorObj);
+        Group showProgramCommandsView = new Group();
+        Canvas showProgramCommandsCanvas = new Canvas(400,640);
+        showProgramCommandsView.getChildren().add(showProgramCommandsCanvas);
 
-        //FloorPane floor = FloorPaneMapper.readFloorStateFromStringRepresentation(FileReader.readFile("src/main/scheme/dk.plpa/FloorPlan.scm"));
-        FloorPane floor = FloorPaneMapper.readFloorStateFromList(floorArr);
-        floor.setAlignment(Pos.CENTER);
-        floor.setPadding(new Insets(25, 25, 25, 25));
+        Group programmingView = new Group();
+        Canvas programmingCanvas = new Canvas(256,640);
+        setUpProgrammingView(programmingView,programmingCanvas);
 
-        root.getChildren().add(floor);
-        root.getChildren().add(canvas);
+        SplitPane sidePane = new SplitPane(showProgramCommandsView, programmingView);
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        SplitPane mainPane = new SplitPane(animationView, sidePane);
+        mainPane.setOrientation(Orientation.HORIZONTAL);
+
+        rootView.getChildren().add(mainPane);
+
+        runAnimation(animationCanvas);
+
+        theStage.show();
+
+    }
+
+    private void runAnimation(Canvas animationCanvas){
+        GraphicsContext gc = animationCanvas.getGraphicsContext2D();
 
         new AnimationTimer() {
             private int currentState = 0;
@@ -82,19 +104,52 @@ public class App extends Application {
 
             }
         }.start();
-
-        theStage.show();
-
     }
 
-    private List<List<String>> convertFloorToLists(Object[] floorObj) {
-        List<List<String>> floorArr = new ArrayList<>();
-        for (Object aFloorObj : floorObj) {
-            List<Object> rowObj = (List<Object>) aFloorObj;
-            List<String> stringList = rowObj.stream().map(Object::toString).collect(Collectors.toList());
-            floorArr.add(stringList);
-        }
-        return floorArr;
+    private FloorPane createFloor(){
+        FloorPane floor = FloorPaneMapper.getFloorStateFromScheme();
+        floor.setAlignment(Pos.CENTER);
+        floor.setPadding(new Insets(25, 25, 25, 25));
+        return floor;
+    }
+
+    private void setUpAnimationView(Group animationPartGroup, FloorPane floor, Canvas canvas){
+        ObservableList<Node> animationPartChildren = animationPartGroup.getChildren();
+        animationPartChildren.add(floor);
+        animationPartChildren.add(canvas);
+    }
+
+    private void setUpProgrammingView(Group sidePartGroup, Canvas sideCanvas){
+        Button buttonForward = new Button("MOVE FORWARD");
+        buttonForward.setOnAction(event -> System.out.println("MOVE_FORWARD"));
+
+        Button buttonRight = new Button("TURN_RIGHT");
+
+        Button buttonLeft = new Button("TURN LEFT");
+        Button buttonPickObject = new Button("PICK OBJECT");
+        Button buttonDropObject = new Button("DROP OBJECT");
+
+        TextField filed = new TextField();
+        filed.setLayoutX(350);
+        filed.setLayoutY(150);
+        buttonForward.setLayoutX(200);
+        buttonForward.setLayoutY(50);
+        buttonRight.setLayoutX(200);
+        buttonRight.setLayoutY(100);
+        buttonLeft.setLayoutX(200);
+        buttonLeft.setLayoutY(150);
+        buttonPickObject.setLayoutX(200);
+        buttonPickObject.setLayoutY(200);
+        buttonDropObject.setLayoutX(200);
+        buttonDropObject.setLayoutY(250);
+
+        sidePartGroup.getChildren().add(sideCanvas);
+        sidePartGroup.getChildren().add(buttonForward);
+        sidePartGroup.getChildren().add(buttonRight);
+        sidePartGroup.getChildren().add(buttonLeft);
+        sidePartGroup.getChildren().add(buttonPickObject);
+        sidePartGroup.getChildren().add(buttonDropObject);
+        sidePartGroup.getChildren().add(filed);
     }
 
 
