@@ -15,9 +15,11 @@
 (define robotState
       (lambda (init)
           (let ((state init))
-              (lambda (proc steps)
-                  (set! state (proc state steps))
-                    state))))
+              (case-lambda
+                ((aProc) (set! state (aProc state)))
+                ((bProc bSteps) (set! state (bProc state bSteps)))
+                    )
+                    state)))
 
 (define (MoveForward state noOfSteps)
     (send 'moveForward state noOfSteps)
