@@ -12,13 +12,21 @@
     (newline))
     commands))
 
+;;(define robotState
+;;      (lambda (init)
+;;          (let* ((state init))
+;;              (case-lambda
+;;                ((aproc) (set! state aproc))
+;;                ((aproc bsteps) (set! state aproc)))
+;;               )))
+
+;; THIS SHOULD WORK BUT DOESNT.. Sucks
 (define robotState
       (lambda (init)
           (let ((state init))
-              (case-lambda
-                ((aproc) (set! state aproc))
-                ((aproc bsteps) (set! state aproc)))
-               state)))
+              (lambda (proc value)
+                  (set! state ((proc state value)))
+                    state))))
 
 
 (define (MoveForward state noOfSteps)
@@ -28,6 +36,8 @@
 (define (GetX state)
     (send 'getX state)
 )
+
+
 
 (define r (robot 8 5 "S" 0 '()))
 
