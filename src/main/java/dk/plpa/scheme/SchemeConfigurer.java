@@ -19,7 +19,7 @@ public class SchemeConfigurer {
         this.schemeFiles.add("src/main/scheme/dk.plpa/FloorUtil.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/simulation.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/factorial.scm");
-    }
+}
 
     public void configureSchemeEnvironment(){
         registerEnvironment();

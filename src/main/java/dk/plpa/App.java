@@ -1,10 +1,10 @@
 package dk.plpa;
 
 
-import dk.plpa.gui.FloorPane;
 import dk.plpa.gui.views.AnimationView;
+import dk.plpa.gui.elements.FloorPane;
+import dk.plpa.gui.views.CommandsListView;
 import dk.plpa.gui.views.RobotProgrammingView;
-import dk.plpa.gui.views.ShowCommandsView;
 import dk.plpa.scheme.SchemeConfigurer;
 import dk.plpa.scheme.SchemeProcedure;
 import dk.plpa.utils.FloorPaneMapper;
@@ -36,18 +36,18 @@ public class App extends Application {
     @Override
     public void start(Stage theStage) throws Exception {
         AnimationView animationView = new AnimationView(512, 640);
-        ShowCommandsView showCommandsView = new ShowCommandsView(400, 640);
-        RobotProgrammingView robotProgrammingView = new RobotProgrammingView(256, 640);
+        RobotProgrammingView robotProgrammingView = new RobotProgrammingView(400, 640);
+        CommandsListView commandsListView = new CommandsListView(256, 640);
 
-        setUpViews(theStage, animationView, showCommandsView, robotProgrammingView);
-
+        setUpViews(theStage, animationView, robotProgrammingView, commandsListView);
+        robotProgrammingView.setUpViewElements();
         runAnimation(animationView.getCanvas());
 
-        theStage.show();
 
+        theStage.show();
     }
 
-    private void setUpViews(Stage theStage, AnimationView animationView, ShowCommandsView showCommandsView, RobotProgrammingView robotProgrammingView) {
+    private void setUpViews(Stage theStage, AnimationView animationView, RobotProgrammingView robotProgrammingView, CommandsListView commandsListView) {
         Group rootView = new Group();
 
         Scene scene = new Scene(rootView);
@@ -58,9 +58,9 @@ public class App extends Application {
 
         animationView.setBackground(floor);
 
-        robotProgrammingView.setUpProgrammingViewElements();
+        commandsListView.setUpViewElements();
 
-        SplitPane sidePane = new SplitPane(showCommandsView, robotProgrammingView);
+        SplitPane sidePane = new SplitPane(robotProgrammingView, commandsListView);
 
         SplitPane mainPane = new SplitPane(animationView, sidePane);
 

@@ -1,9 +1,9 @@
 package dk.plpa.utils;
 
 
-import dk.plpa.gui.FloorPane;
-import dk.plpa.gui.FloorRow;
-import dk.plpa.gui.Tile;
+import dk.plpa.gui.elements.FloorPane;
+import dk.plpa.gui.elements.FloorRow;
+import dk.plpa.gui.elements.Tile;
 import dk.plpa.scheme.SchemeProcedure;
 import gnu.lists.FVector;
 import javafx.scene.paint.Color;

@@ -1,4 +1,4 @@
-package dk.plpa.gui;
+package dk.plpa.gui.elements;
 
 
 import javafx.scene.paint.Color;

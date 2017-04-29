@@ -1,55 +1,54 @@
 package dk.plpa.gui.views;
 
 
+import dk.plpa.gui.elements.RobotProgrammingCell;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ListView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 
 public class RobotProgrammingView extends AbstractView {
+
+    private ListView<String> commandsList = new ListView<>();
 
     public RobotProgrammingView(double width, double height) {
         super(width, height);
     }
 
-    public void setUpProgrammingViewElements(){
-        Button buttonForward = new Button("MOVE FORWARD");
-        buttonForward.setOnAction(event -> System.out.println("MOVE_FORWARD"));
+    public void setUpViewElements() {
+        // TODO Remove this elements only from the CommandsListView
+        ObservableList<String> items = FXCollections.observableArrayList ("MOVE FORWARD", "TURN RIGHT", "TURN LEFT", "PICK OBJECT", "DROP OBJECT");
+        commandsList.setItems(items);
 
-        Button buttonRight = new Button("TURN RIGHT");
-        Button buttonLeft = new Button("TURN LEFT");
-        Button buttonPickObject = new Button("PICK OBJECT");
-        Button buttonDropObject = new Button("DROP OBJECT");
+        commandsList.setCellFactory(param -> new RobotProgrammingCell());
+        commandsList.setMinWidth(this.getCanvas().getWidth());
+        commandsList.setMaxWidth(this.getCanvas().getWidth());
 
-        TextField textField= new TextField();
-        textField.setLayoutX(350);
-        textField.setLayoutY(150);
+        commandsList.setOnDragOver(event -> {
+            if (event.getGestureSource() != commandsList && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
 
-        buttonForward.setLayoutX(200);
-        buttonForward.setLayoutY(50);
+        commandsList.setOnDragEntered(event -> event.consume());
 
-        buttonRight.setLayoutX(200);
-        buttonRight.setLayoutY(100);
+        commandsList.setOnDragExited(event -> event.consume());
 
-        buttonLeft.setLayoutX(200);
-        buttonLeft.setLayoutY(150);
+        commandsList.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                commandsList.getItems().add(db.getString());
+                success = true;
+            }
+            event.setDropCompleted(success);
 
-        buttonPickObject.setLayoutX(200);
-        buttonPickObject.setLayoutY(200);
+            event.consume();
+        });
 
-        buttonDropObject.setLayoutX(200);
-        buttonDropObject.setLayoutY(250);
-
-        ObservableList<Node> sidePartViewChildren = this.getChildren();
-
-        sidePartViewChildren.add(buttonForward);
-        sidePartViewChildren.add(buttonRight);
-        sidePartViewChildren.add(buttonLeft);
-        sidePartViewChildren.add(buttonPickObject);
-        sidePartViewChildren.add(buttonDropObject);
-        sidePartViewChildren.add(textField);
+        this.getChildren().add(commandsList);
     }
 
 }
