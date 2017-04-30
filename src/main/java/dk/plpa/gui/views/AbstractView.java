@@ -23,6 +23,7 @@ public abstract class AbstractView extends Group{
         if(this.getChildren().contains(this.canvas)){
             this.getChildren().remove(this.canvas);
         }
+
         this.getChildren().add(background);
         this.getChildren().add(canvas);
     }

@@ -25,7 +25,7 @@ public class RobotProgrammingCell extends ReorderedCell {
         textField.setMaxWidth(60);
         hbox.getChildren().addAll(label, pane, textField, button);
         HBox.setHgrow(pane, Priority.ALWAYS);
-        button.setOnAction(event -> this.getListView().getItems().remove( this.getIndex()));
+        button.setOnAction(event -> this.getListView().getItems().remove(this.getIndex()));
     }
 
     @Override
@@ -38,8 +38,16 @@ public class RobotProgrammingCell extends ReorderedCell {
         } else {
             lastItem = item;
             this.label.setText(item != null ? item : "<null>");
+            if (("DROP OBJECT").equals(item) && (textField != null)) {
+               textField.setDisable(true);
+               textField.setVisible(false);
+            } else{
+                textField.setDisable(false);
+                textField.setVisible(true);
+            }
             setGraphic(hbox);
         }
     }
+
 
 }

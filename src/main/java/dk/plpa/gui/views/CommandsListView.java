@@ -3,7 +3,6 @@ package dk.plpa.gui.views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.WritableImage;
@@ -12,7 +11,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
 public class CommandsListView extends AbstractView {
-
 
     private ListView<String> commandsList = new ListView<>();
 
@@ -25,7 +23,7 @@ public class CommandsListView extends AbstractView {
         // TODO elements read from file
         ObservableList<String> commands = FXCollections.observableArrayList("MOVE FORWARD", "TURN RIGHT",
                 "TURN LEFT", "PICK OBJECT", "DROP OBJECT");
-
+        commandsList.setMinWidth(getCanvas().getWidth());
         commandsList.setItems(commands);
         commandsList.setCellFactory(param -> {
             ListCell<String> cell = new ListCell<String>() {
@@ -50,8 +48,7 @@ public class CommandsListView extends AbstractView {
             return cell;
         });
 
-        ObservableList<Node> sidePartViewChildren = this.getChildren();
-        sidePartViewChildren.add(commandsList);
+        this.getChildren().add(commandsList);
 
     }
 

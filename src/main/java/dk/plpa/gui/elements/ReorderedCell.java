@@ -2,6 +2,7 @@ package dk.plpa.gui.elements;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -64,15 +65,21 @@ public class ReorderedCell extends ListCell<String> {
                     this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), db.getString());
                     success = true;
                 }
-            } else {
+            } else if (gestureSource != thisCell) {
                 if (db.hasString()) {
 
-                    RobotProgrammingCell gestureSourceCell =(RobotProgrammingCell) gestureSource;
+                    RobotProgrammingCell gestureSourceCell = (RobotProgrammingCell) gestureSource;
                     RobotProgrammingCell gestureTargetCell = (RobotProgrammingCell) gestureTarget;
-                    String soureText = gestureSourceCell.getTextField().getText();
-                    String targetText = gestureTargetCell.getTextField().getText();
-                    gestureSourceCell.getTextField().setText(targetText);
-                    gestureTargetCell.getTextField().setText(soureText);
+
+                    TextField sourceTextField = gestureSourceCell.getTextField();
+                    TextField targetTextField = gestureTargetCell.getTextField();
+
+                    if (sourceTextField != null && targetTextField != null) {
+                        String sourceText = sourceTextField.getText();
+                        String targetText = targetTextField.getText();
+                        sourceTextField.setText(targetText);
+                        targetTextField.setText(sourceText);
+                    }
 
                     int sourceIdx = gestureSourceCell.getIndex();
                     int targetIndex = gestureTargetCell.getIndex();

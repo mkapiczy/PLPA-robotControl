@@ -1,8 +1,11 @@
 package dk.plpa;
 
 
-import dk.plpa.gui.views.AnimationView;
+import dk.plpa.gui.Dimensions;
 import dk.plpa.gui.elements.FloorPane;
+import dk.plpa.gui.elements.FloorRow;
+import dk.plpa.gui.elements.Tile;
+import dk.plpa.gui.views.AnimationView;
 import dk.plpa.gui.views.CommandsListView;
 import dk.plpa.gui.views.RobotProgrammingView;
 import dk.plpa.scheme.SchemeConfigurer;
@@ -12,18 +15,21 @@ import gnu.math.IntNum;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
 public class App extends Application {
 
+    private Stage theStage;
+    private AnimationView animationView;
+    private RobotProgrammingView robotProgrammingView;
+    private CommandsListView commandsListView;
 
     public static void main(String[] args) {
         SchemeConfigurer schemeConfigurer = new SchemeConfigurer();
@@ -35,30 +41,66 @@ public class App extends Application {
 
     @Override
     public void start(Stage theStage) throws Exception {
-        AnimationView animationView = new AnimationView(512, 640);
-        RobotProgrammingView robotProgrammingView = new RobotProgrammingView(400, 640);
-        CommandsListView commandsListView = new CommandsListView(256, 640);
+        this.animationView = new AnimationView(Dimensions.ANIMATION_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
+        this.robotProgrammingView = new RobotProgrammingView(Dimensions.ROBOT_PROGRAMMING_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
+        this.commandsListView = new CommandsListView(Dimensions.COMMANDS_LIST_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
+        this.theStage = theStage;
 
-        setUpViews(theStage, animationView, robotProgrammingView, commandsListView);
-        robotProgrammingView.setUpViewElements();
-        runAnimation(animationView.getCanvas());
+        setUpViews();
 
+        askUserToChooseRobotStartingPosition();
 
         theStage.show();
     }
 
-    private void setUpViews(Stage theStage, AnimationView animationView, RobotProgrammingView robotProgrammingView, CommandsListView commandsListView) {
+    private void askUserToChooseRobotStartingPosition() {
+        robotProgrammingView.setDisable(true);
+        commandsListView.setDisable(true);
+        animationView.getRunSimulationButton().setDisable(true);
+
+        GraphicsContext gc = robotProgrammingView.getCanvas().getGraphicsContext2D();
+        gc.fillText("Choose robot starting position", 100, 100);
+
+        animationView.getCanvas().setMouseTransparent(true);
+
+        for (FloorRow row : animationView.getFloor().getRows()) {
+            for (Tile tile : row.getTiles())
+                tile.setOnMouseClicked(event -> {
+                    if (tile.getFill().equals(Color.RED)) {
+                        animationView.getCanvas().setMouseTransparent(false);
+                        animationView.getFloor().setMouseTransparent(true);
+                        robotProgrammingView.setDisable(false);
+                        commandsListView.setDisable(false);
+                        animationView.getRunSimulationButton().setDisable(false);
+                        gc.clearRect(0, 0, 512, 512);
+                        robotProgrammingView.setUpStartingPosition("STARTING POSITION x: " + ((GridPane) animationView.getFloor()).getRowIndex(tile) + " y: " + ((GridPane) animationView.getFloor()).getColumnIndex(tile));
+                        runAnimation();
+                    } else {
+                        gc.clearRect(0, 0, 512, 512);
+                        gc.setFill(Color.BLACK);
+                        gc.fillText("Pick robot starting position", 100, 100);
+                        gc.setFill(Color.RED);
+                        gc.fillText("Starting position must be located on the one of the RED tiles.", 70, 130);
+                    }
+                });
+        }
+    }
+
+    private void setUpViews() {
         Group rootView = new Group();
 
         Scene scene = new Scene(rootView);
         theStage.setTitle("Robot Control");
         theStage.setScene(scene);
+        theStage.setResizable(false);
 
         FloorPane floor = createFloor();
-
         animationView.setBackground(floor);
+        animationView.setUpViewElements();
 
         commandsListView.setUpViewElements();
+
+        robotProgrammingView.setUpViewElements();
 
         SplitPane sidePane = new SplitPane(robotProgrammingView, commandsListView);
 
@@ -67,8 +109,14 @@ public class App extends Application {
         rootView.getChildren().add(mainPane);
     }
 
-    private void runAnimation(Canvas animationCanvas) {
-        GraphicsContext gc = animationCanvas.getGraphicsContext2D();
+    private FloorPane createFloor() {
+        FloorPane floor = FloorPaneMapper.getFloorStateFromScheme();
+        floor.setPadding(new Insets(25, 25, 25, 25));
+        return floor;
+    }
+
+    private void runAnimation() {
+        GraphicsContext gc = animationView.getCanvas().getGraphicsContext2D();
 
         new AnimationTimer() {
             private int currentState = 0;
@@ -94,13 +142,6 @@ public class App extends Application {
 
             }
         }.start();
-    }
-
-    private FloorPane createFloor() {
-        FloorPane floor = FloorPaneMapper.getFloorStateFromScheme();
-        floor.setAlignment(Pos.CENTER);
-        floor.setPadding(new Insets(25, 25, 25, 25));
-        return floor;
     }
 
 
