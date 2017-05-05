@@ -17,19 +17,22 @@ public class RobotProgrammingCell extends ReorderedCell {
     private TextField textField;
     private Pane pane = new Pane();
     private Button button = new Button("-");
-    private String lastItem;
+    private Command lastItem;
 
     public RobotProgrammingCell() {
         super();
         textField = new TextField();
         textField.setMaxWidth(60);
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            lastItem.setArg(newValue);
+        });
         hbox.getChildren().addAll(label, pane, textField, button);
         HBox.setHgrow(pane, Priority.ALWAYS);
         button.setOnAction(event -> this.getListView().getItems().remove(this.getIndex()));
     }
 
     @Override
-    protected void updateItem(String item, boolean empty) {
+    protected void updateItem(Command item, boolean empty) {
         super.updateItem(item, empty);
         this.setText(null);
         if (empty) {
@@ -37,13 +40,14 @@ public class RobotProgrammingCell extends ReorderedCell {
             this.setGraphic(null);
         } else {
             lastItem = item;
-            this.label.setText(item != null ? item : "<null>");
-            if (("DROP OBJECT").equals(item) && (textField != null)) {
+            this.label.setText(item != null ? item.getName() : "<null>");
+            if (("DROP OBJECT").equals(item.getName()) && (textField != null)) {
                textField.setDisable(true);
                textField.setVisible(false);
             } else{
                 textField.setDisable(false);
                 textField.setVisible(true);
+                textField.setText(item.getArg());
             }
             setGraphic(hbox);
         }

@@ -2,13 +2,12 @@ package dk.plpa.gui.elements;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
-public class ReorderedCell extends ListCell<String> {
+public class ReorderedCell extends ListCell<Command> {
 
     public ReorderedCell() {
         ListCell thisCell = this;
@@ -19,7 +18,7 @@ public class ReorderedCell extends ListCell<String> {
 
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            content.putString(getItem());
+            content.putString(getItem().getName());
             dragboard.setContent(content);
 
             event.consume();
@@ -62,7 +61,7 @@ public class ReorderedCell extends ListCell<String> {
 
             if (!(gestureSource instanceof ReorderedCell)) {
                 if (db.hasString()) {
-                    this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), db.getString());
+                    this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), new Command(db.getString()));
                     success = true;
                 }
             } else if (gestureSource != thisCell) {
@@ -71,21 +70,11 @@ public class ReorderedCell extends ListCell<String> {
                     RobotProgrammingCell gestureSourceCell = (RobotProgrammingCell) gestureSource;
                     RobotProgrammingCell gestureTargetCell = (RobotProgrammingCell) gestureTarget;
 
-                    TextField sourceTextField = gestureSourceCell.getTextField();
-                    TextField targetTextField = gestureTargetCell.getTextField();
-
-                    if (sourceTextField != null && targetTextField != null) {
-                        String sourceText = sourceTextField.getText();
-                        String targetText = targetTextField.getText();
-                        sourceTextField.setText(targetText);
-                        targetTextField.setText(sourceText);
-                    }
-
                     int sourceIdx = gestureSourceCell.getIndex();
                     int targetIndex = gestureTargetCell.getIndex();
-                    ObservableList<String> items = this.getListView().getItems();
+                    ObservableList<Command> items = this.getListView().getItems();
 
-                    String sourceTempContent = items.get(sourceIdx);
+                    Command sourceTempContent = items.get(sourceIdx);
                     items.set(sourceIdx, items.get(targetIndex));
                     items.set(targetIndex, sourceTempContent);
 
@@ -102,13 +91,13 @@ public class ReorderedCell extends ListCell<String> {
     }
 
     @Override
-    protected void updateItem(String item, boolean empty) {
+    protected void updateItem(Command item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {
             setGraphic(null);
         } else {
-            setText(item);
+            setText(item.getName());
         }
     }
 }

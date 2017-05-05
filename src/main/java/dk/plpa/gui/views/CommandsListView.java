@@ -1,6 +1,7 @@
 package dk.plpa.gui.views;
 
 
+import dk.plpa.gui.elements.Command;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
@@ -12,7 +13,7 @@ import javafx.scene.input.TransferMode;
 
 public class CommandsListView extends AbstractView {
 
-    private ListView<String> commandsList = new ListView<>();
+    private ListView<Command> commandsList = new ListView<>();
 
 
     public CommandsListView(double width, double height) {
@@ -21,16 +22,18 @@ public class CommandsListView extends AbstractView {
 
     public void setUpViewElements() {
         // TODO elements read from file
-        ObservableList<String> commands = FXCollections.observableArrayList("MOVE FORWARD", "TURN RIGHT",
-                "TURN LEFT", "PICK OBJECT", "DROP OBJECT");
+        ObservableList<Command> commands = FXCollections.observableArrayList(new Command("MOVE FORWARD"), new Command("TURN RIGHT"),
+                new Command("TURN LEFT"), new Command("PICK OBJECT"), new Command("DROP OBJECT"));
         commandsList.setMinWidth(getCanvas().getWidth());
         commandsList.setItems(commands);
         commandsList.setCellFactory(param -> {
-            ListCell<String> cell = new ListCell<String>() {
+            ListCell<Command> cell = new ListCell<Command>() {
                 @Override
-                public void updateItem(String item, boolean empty) {
+                public void updateItem(Command item, boolean empty) {
                     super.updateItem(item, empty);
-                    setText(item);
+                    if(item != null) {
+                        setText(item.getName());
+                    }
                 }
             };
 

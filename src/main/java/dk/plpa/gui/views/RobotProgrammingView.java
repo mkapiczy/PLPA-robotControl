@@ -1,6 +1,7 @@
 package dk.plpa.gui.views;
 
 
+import dk.plpa.gui.elements.Command;
 import dk.plpa.gui.elements.RobotProgrammingCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +22,7 @@ public class RobotProgrammingView extends AbstractView {
 
     private VBox vBox = new VBox();
     private ListView<String> startingPosition = new ListView<>();
-    private ListView<String> commandsList = new ListView<>();
+    private ListView<Command> commandsList = new ListView<>();
     private Button restartProgrammingButton;
     private Button loadProgramToRobotButton;
 
@@ -57,7 +58,7 @@ public class RobotProgrammingView extends AbstractView {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString()) {
-                commandsList.getItems().add(db.getString());
+                commandsList.getItems().add((new Command(db.getString())));
                 success = true;
             }
             event.setDropCompleted(success);
