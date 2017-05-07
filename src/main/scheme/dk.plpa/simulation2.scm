@@ -3,16 +3,16 @@
 (define commands '((0 8 "E") (MoveForward 8) (TurnLeft 1) (MoveForward 7) (TurnLeft 1) (MoveForward 2) (TurnLeft 1) (PickObject "P1")
     (TurnLeft 1) (MoveForward 2) (TurnRight 1) (MoveForward 7) (DropObject 1)))
 (define commandPointer 0)
-(define rbt (robot 0 0 "E" 0 '()))
+(define robotState (robot 0 0 "E" 0 '()))
 
-(define robotState
+(define getNextRobotState
       (lambda ()
               (lambda (proc steps)
               (if (= commandPointer 0)
-                (set! rbt (robot (list-ref (list-ref commands commandPointer)0) (list-ref (list-ref commands commandPointer)1) (list-ref (list-ref commands commandPointer)2) 0 '()))
-                (set! rbt (proc rbt steps))
+                (set! robotState (robot (list-ref (list-ref commands commandPointer)0) (list-ref (list-ref commands commandPointer)1) (list-ref (list-ref commands commandPointer)2) 0 '()))
+                (set! robotState (proc robotState steps))
               )
-          rbt)))
+          robotState)))
 
 (define (MoveForward state noOfSteps)
     (send 'moveForward state noOfSteps)
@@ -38,7 +38,7 @@
     (send 'getX robotState)
 )
 
-(define step (robotState))
+(define step (getNextRobotState))
 
 (define (moveRobot)
     (let ((command (list-ref (list-ref commands commandPointer)0)))
