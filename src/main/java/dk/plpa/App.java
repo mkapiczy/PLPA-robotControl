@@ -2,6 +2,7 @@ package dk.plpa;
 
 
 import dk.plpa.gui.Dimensions;
+import dk.plpa.gui.elements.Direction;
 import dk.plpa.gui.elements.FloorPane;
 import dk.plpa.gui.elements.FloorRow;
 import dk.plpa.gui.elements.Tile;
@@ -73,7 +74,9 @@ public class App extends Application {
                         commandsListView.setDisable(false);
                         animationView.getRunSimulationButton().setDisable(false);
                         gc.clearRect(0, 0, 512, 512);
-                        robotProgrammingView.setUpStartingPosition("STARTING POSITION x: " + ((GridPane) animationView.getFloor()).getRowIndex(tile) + " y: " + ((GridPane) animationView.getFloor()).getColumnIndex(tile));
+                        int xCoord = ((GridPane) animationView.getFloor()).getRowIndex(tile);
+                        int yCoord = ((GridPane) animationView.getFloor()).getColumnIndex(tile);
+                        robotProgrammingView.setUpStartingPosition(xCoord, yCoord, Direction.EAST);
                         runAnimation();
                     } else {
                         gc.clearRect(0, 0, 512, 512);

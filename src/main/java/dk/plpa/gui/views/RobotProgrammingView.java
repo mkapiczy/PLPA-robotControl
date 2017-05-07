@@ -2,7 +2,11 @@ package dk.plpa.gui.views;
 
 
 import dk.plpa.gui.elements.Command;
+import dk.plpa.gui.elements.Direction;
+import dk.plpa.gui.elements.Position;
 import dk.plpa.gui.elements.RobotProgrammingCell;
+import dk.plpa.scheme.SchemeProcedure;
+import dk.plpa.scheme.SchemeTypesMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -21,7 +25,8 @@ import lombok.Setter;
 public class RobotProgrammingView extends AbstractView {
 
     private VBox vBox = new VBox();
-    private ListView<String> startingPosition = new ListView<>();
+    private ListView<String> startingPositionLabel = new ListView<>();
+    private Position startingPosition;
     private ListView<Command> commandsList = new ListView<>();
     private Button restartProgrammingButton;
     private Button loadProgramToRobotButton;
@@ -30,15 +35,17 @@ public class RobotProgrammingView extends AbstractView {
         super(width, height);
     }
 
-    public void setUpStartingPosition(String s){
+    public void setUpStartingPosition(int x, int y, Direction direction){
+        String s = "STARTING POSITION x: " + x + " y: " + y;
         ObservableList<String> commands = FXCollections.observableArrayList(s);
-        startingPosition.setItems(commands);
+        startingPositionLabel.setItems(commands);
+        startingPosition = new Position(x,y,direction);
     }
 
     public void setUpViewElements() {
-        startingPosition.setMinWidth(this.getCanvas().getWidth());
-        startingPosition.setMaxWidth(this.getCanvas().getHeight());
-        startingPosition.setMaxHeight(40);
+        startingPositionLabel.setMinWidth(this.getCanvas().getWidth());
+        startingPositionLabel.setMaxWidth(this.getCanvas().getHeight());
+        startingPositionLabel.setMaxHeight(40);
 
         commandsList.setCellFactory(param -> new RobotProgrammingCell());
         commandsList.setMinWidth(this.getCanvas().getWidth());
@@ -73,12 +80,23 @@ public class RobotProgrammingView extends AbstractView {
 
         loadProgramToRobotButton = new Button("Load program into robot memory");
         loadProgramToRobotButton.setOnMouseClicked(event -> {
-
+            loadProceduresIntoScheme();
         });
-        vBox.getChildren().addAll(startingPosition, commandsList, restartProgrammingButton, loadProgramToRobotButton);
+        vBox.getChildren().addAll(startingPositionLabel, commandsList, restartProgrammingButton, loadProgramToRobotButton);
         vBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(commandsList, Priority.ALWAYS);
         this.getChildren().add(vBox);
+    }
+
+    private void loadProceduresIntoScheme() {
+        SchemeProcedure loadProcedure = new SchemeProcedure("loadCommands");
+
+        String s = SchemeTypesMapper.createLoadCommandSchemeArgument(startingPosition, commandsList.getItems());
+
+        loadProcedure.apply1(s);
+
+        SchemeProcedure displayProcedure = new SchemeProcedure("printGlobalValues");
+        displayProcedure.apply0();
     }
 
     public void restartProgramming(){
