@@ -1,5 +1,4 @@
-;;Robot simulation
-;;(include "robot.scm")
+;(include "robot.scm") Uncomment this for testing in PetiteScheme
 
 (define commands '())
 

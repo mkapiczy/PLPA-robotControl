@@ -1,0 +1,48 @@
+(include "robot.scm")
+
+(define commands '((0 8 "E") (MoveForward 8) (TurnLeft 1) (MoveForward 7) (TurnLeft 1) (MoveForward 2) (TurnLeft 1) (PickObject "P1")
+    (TurnLeft 1) (MoveForward 2) (TurnRight 1) (MoveForward 7) (DropObject 1)))
+(define commandPointer 0)
+(define rbt (robot 0 0 "E" 0 '()))
+
+(define robotState
+      (lambda ()
+              (lambda (proc steps)
+              (if (= commandPointer 0)
+                (set! rbt (robot (list-ref (list-ref commands commandPointer)0) (list-ref (list-ref commands commandPointer)1) (list-ref (list-ref commands commandPointer)2) 0 '()))
+                (set! rbt (proc rbt steps))
+              )
+          rbt)))
+
+(define (MoveForward state noOfSteps)
+    (send 'moveForward state noOfSteps)
+)
+
+(define (TurnRight state noOfSteps)
+    (send 'turnRight state)
+)
+
+(define (TurnLeft state noOfSteps)
+    (send 'turnLeft state)
+)
+
+(define (PickObject state object)
+    (send 'pickObject state object)
+)
+
+(define (DropObject state object)
+    (send 'dropObject state)
+)
+
+(define (GetX state)
+    (send 'getX robotState)
+)
+
+(define step (robotState))
+
+(define (moveRobot)
+    (let ((command (list-ref (list-ref commands commandPointer)0)))
+    (let ((steps (list-ref (list-ref commands commandPointer)1)))
+        (step (eval command) steps)
+        (set! commandPointer (+ commandPointer 1))
+    )))
