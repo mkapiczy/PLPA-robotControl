@@ -55,7 +55,7 @@ public class App extends Application {
         this.robotProgrammingView = new RobotProgrammingView(Dimensions.ROBOT_PROGRAMMING_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
         this.commandsListView = new CommandsListView(Dimensions.COMMANDS_LIST_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
         this.theStage = theStage;
-        robotImg = new Image("File:" + System.getProperty("user.dir") +"\\src\\main\\java\\dk\\plpa\\gui\\robot.png");
+        robotImg = new Image("robot.png");
 
         setUpViews();
 
