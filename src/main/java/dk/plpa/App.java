@@ -18,11 +18,19 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 
 public class App extends Application {
@@ -31,6 +39,7 @@ public class App extends Application {
     private AnimationView animationView;
     private RobotProgrammingView robotProgrammingView;
     private CommandsListView commandsListView;
+    private Image robotImg;
 
     public static void main(String[] args) {
         SchemeConfigurer schemeConfigurer = new SchemeConfigurer();
@@ -46,6 +55,7 @@ public class App extends Application {
         this.robotProgrammingView = new RobotProgrammingView(Dimensions.ROBOT_PROGRAMMING_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
         this.commandsListView = new CommandsListView(Dimensions.COMMANDS_LIST_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
         this.theStage = theStage;
+        robotImg = new Image("File:" + System.getProperty("user.dir") +"\\src\\main\\java\\dk\\plpa\\gui\\robot.png");
 
         setUpViews();
 
@@ -76,7 +86,10 @@ public class App extends Application {
                         gc.clearRect(0, 0, 512, 512);
                         int xCoord = ((GridPane) animationView.getFloor()).getRowIndex(tile);
                         int yCoord = ((GridPane) animationView.getFloor()).getColumnIndex(tile);
-                        robotProgrammingView.setUpStartingPosition(xCoord, yCoord, Direction.EAST);
+                        Direction direction = chooseDirection();
+                        robotProgrammingView.setUpStartingPosition(xCoord, yCoord, direction);
+                        tile.setFill(createRobotImagePattern(direction,Color.RED));
+
                         runAnimation();
                     } else {
                         gc.clearRect(0, 0, 512, 512);
@@ -87,6 +100,15 @@ public class App extends Application {
                     }
                 });
         }
+    }
+
+    private ImagePattern createRobotImagePattern(Direction direction, Color backgroundColor) {
+        ImageView pic = new ImageView(robotImg);
+        pic.setRotate(direction.getImageRotation());
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(backgroundColor);
+        Image img = pic.snapshot(params, null);
+        return new ImagePattern(img);
     }
 
     private void setUpViews() {
@@ -154,5 +176,31 @@ public class App extends Application {
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(5);
         gc.fillText(i.toString(), positionX, yPosition);
+    }
+
+    private Direction chooseDirection() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Robot Direction");
+        alert.setHeaderText("Choose which direction the robot is facing");
+        alert.setContentText("Choose direction");
+
+        ButtonType buttonTypeOne = new ButtonType("North");
+        ButtonType buttonTypeTwo = new ButtonType("South");
+        ButtonType buttonTypeThree = new ButtonType("East");
+        ButtonType buttonTypeFour = new ButtonType("West");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == buttonTypeOne){
+            return Direction.NORTH;
+        } else if (result.get() == buttonTypeTwo) {
+            return Direction.SOUTH;
+        } else if (result.get() == buttonTypeThree) {
+            return Direction.EAST;
+        } else {
+           return Direction.WEST;
+        }
     }
 }

@@ -36,7 +36,7 @@ public class RobotProgrammingView extends AbstractView {
     }
 
     public void setUpStartingPosition(int x, int y, Direction direction){
-        String s = "STARTING POSITION x: " + x + " y: " + y;
+        String s = "STARTING POSITION x: " + x + " y: " + y + " direction: " + direction.getValue();
         ObservableList<String> commands = FXCollections.observableArrayList(s);
         startingPositionLabel.setItems(commands);
         startingPosition = new Position(x,y,direction);
