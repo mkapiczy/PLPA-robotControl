@@ -1,22 +1,22 @@
-package dk.plpa.gui.elements;
+package dk.plpa.robot;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Position {
+public class RobotPosition {
     private int xCoord;
     private int yCoord;
-    private Direction direction;
+    private RobotDirectionEnum direction;
 
-    public Position(int xCoord, int yCoord, Direction direction) {
+    public RobotPosition(int xCoord, int yCoord, RobotDirectionEnum direction) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.direction = direction;
     }
 
-    public Position() {
+    public RobotPosition() {
 
     }
 }

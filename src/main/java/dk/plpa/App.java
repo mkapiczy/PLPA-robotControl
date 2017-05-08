@@ -1,11 +1,11 @@
 package dk.plpa;
 
 
-import dk.plpa.gui.Dimensions;
-import dk.plpa.gui.elements.Direction;
-import dk.plpa.gui.elements.FloorPane;
-import dk.plpa.gui.elements.FloorRow;
-import dk.plpa.gui.elements.Tile;
+import dk.plpa.gui.ViewsDimensions;
+import dk.plpa.robot.RobotDirectionEnum;
+import dk.plpa.gui.floorComponents.FloorPane;
+import dk.plpa.gui.floorComponents.FloorRow;
+import dk.plpa.gui.floorComponents.Tile;
 import dk.plpa.gui.views.AnimationView;
 import dk.plpa.gui.views.CommandsListView;
 import dk.plpa.gui.views.RobotProgrammingView;
@@ -51,9 +51,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage theStage) throws Exception {
-        this.animationView = new AnimationView(Dimensions.ANIMATION_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
-        this.robotProgrammingView = new RobotProgrammingView(Dimensions.ROBOT_PROGRAMMING_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
-        this.commandsListView = new CommandsListView(Dimensions.COMMANDS_LIST_VIEW_WIDTH, Dimensions.VIEWS_HEIGHT);
+        this.animationView = new AnimationView(ViewsDimensions.ANIMATION_VIEW_WIDTH, ViewsDimensions.VIEWS_HEIGHT);
+        this.robotProgrammingView = new RobotProgrammingView(ViewsDimensions.ROBOT_PROGRAMMING_VIEW_WIDTH, ViewsDimensions.VIEWS_HEIGHT);
+        this.commandsListView = new CommandsListView(ViewsDimensions.COMMANDS_LIST_VIEW_WIDTH, ViewsDimensions.VIEWS_HEIGHT);
         this.theStage = theStage;
         robotImg = new Image("robot.png");
 
@@ -86,7 +86,7 @@ public class App extends Application {
                         gc.clearRect(0, 0, 512, 512);
                         int xCoord = ((GridPane) animationView.getFloor()).getRowIndex(tile);
                         int yCoord = ((GridPane) animationView.getFloor()).getColumnIndex(tile);
-                        Direction direction = chooseDirection();
+                        RobotDirectionEnum direction = chooseDirection();
                         robotProgrammingView.setUpStartingPosition(xCoord, yCoord, direction);
                         tile.setFill(createRobotImagePattern(direction,Color.RED));
 
@@ -102,7 +102,7 @@ public class App extends Application {
         }
     }
 
-    private ImagePattern createRobotImagePattern(Direction direction, Color backgroundColor) {
+    private ImagePattern createRobotImagePattern(RobotDirectionEnum direction, Color backgroundColor) {
         ImageView pic = new ImageView(robotImg);
         pic.setRotate(direction.getImageRotation());
         SnapshotParameters params = new SnapshotParameters();
@@ -178,9 +178,9 @@ public class App extends Application {
         gc.fillText(i.toString(), positionX, yPosition);
     }
 
-    private Direction chooseDirection() {
+    private RobotDirectionEnum chooseDirection() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Robot Direction");
+        alert.setTitle("Robot RobotDirectionEnum");
         alert.setHeaderText("Choose which direction the robot is facing");
         alert.setContentText("Choose direction");
 
@@ -194,13 +194,13 @@ public class App extends Application {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == buttonTypeOne){
-            return Direction.NORTH;
+            return RobotDirectionEnum.NORTH;
         } else if (result.get() == buttonTypeTwo) {
-            return Direction.SOUTH;
+            return RobotDirectionEnum.SOUTH;
         } else if (result.get() == buttonTypeThree) {
-            return Direction.EAST;
+            return RobotDirectionEnum.EAST;
         } else {
-           return Direction.WEST;
+           return RobotDirectionEnum.WEST;
         }
     }
 }

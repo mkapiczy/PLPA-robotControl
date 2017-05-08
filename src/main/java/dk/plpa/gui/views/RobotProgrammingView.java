@@ -1,10 +1,10 @@
 package dk.plpa.gui.views;
 
 
-import dk.plpa.gui.elements.Command;
-import dk.plpa.gui.elements.Direction;
-import dk.plpa.gui.elements.Position;
-import dk.plpa.gui.elements.RobotProgrammingCell;
+import dk.plpa.gui.listViewsComponents.CommandListItem;
+import dk.plpa.gui.listViewsComponents.RobotProgrammingCell;
+import dk.plpa.robot.RobotDirectionEnum;
+import dk.plpa.robot.RobotPosition;
 import dk.plpa.scheme.SchemeProcedure;
 import dk.plpa.scheme.SchemeTypesMapper;
 import javafx.collections.FXCollections;
@@ -26,8 +26,8 @@ public class RobotProgrammingView extends AbstractView {
 
     private VBox vBox = new VBox();
     private ListView<String> startingPositionLabel = new ListView<>();
-    private Position startingPosition;
-    private ListView<Command> commandsList = new ListView<>();
+    private RobotPosition startingPosition;
+    private ListView<CommandListItem> commandsList = new ListView<>();
     private Button restartProgrammingButton;
     private Button loadProgramToRobotButton;
 
@@ -35,11 +35,11 @@ public class RobotProgrammingView extends AbstractView {
         super(width, height);
     }
 
-    public void setUpStartingPosition(int x, int y, Direction direction){
+    public void setUpStartingPosition(int x, int y, RobotDirectionEnum direction) {
         String s = "STARTING POSITION x: " + x + " y: " + y + " direction: " + direction.getValue();
         ObservableList<String> commands = FXCollections.observableArrayList(s);
         startingPositionLabel.setItems(commands);
-        startingPosition = new Position(x,y,direction);
+        startingPosition = new RobotPosition(x, y, direction);
     }
 
     public void setUpViewElements() {
@@ -65,7 +65,7 @@ public class RobotProgrammingView extends AbstractView {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString()) {
-                commandsList.getItems().add((new Command(db.getString())));
+                commandsList.getItems().add((new CommandListItem(db.getString())));
                 success = true;
             }
             event.setDropCompleted(success);
@@ -99,7 +99,7 @@ public class RobotProgrammingView extends AbstractView {
         displayProcedure.apply0();
     }
 
-    public void restartProgramming(){
+    public void restartProgramming() {
         commandsList.getItems().clear();
     }
 

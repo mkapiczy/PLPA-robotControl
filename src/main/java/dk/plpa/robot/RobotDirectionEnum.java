@@ -1,6 +1,6 @@
-package dk.plpa.gui.elements;
+package dk.plpa.robot;
 
-public enum Direction {
+public enum RobotDirectionEnum {
     NORTH ("N",0),
     SOUTH ("S", 180),
     EAST ("E", 90),
@@ -10,7 +10,7 @@ public enum Direction {
     private int imgRotation = 0;
 
 
-    Direction(String e, int rotation) {
+    RobotDirectionEnum(String e, int rotation) {
         value = e;
         this.imgRotation = rotation;
     }

@@ -1,7 +1,7 @@
 package dk.plpa.gui.views;
 
 
-import dk.plpa.gui.elements.FloorPane;
+import dk.plpa.gui.floorComponents.FloorPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;

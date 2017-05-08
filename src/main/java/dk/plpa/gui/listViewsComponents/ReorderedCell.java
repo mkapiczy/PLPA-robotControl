@@ -1,4 +1,4 @@
-package dk.plpa.gui.elements;
+package dk.plpa.gui.listViewsComponents;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
@@ -7,7 +7,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
-public class ReorderedCell extends ListCell<Command> {
+public class ReorderedCell extends ListCell<CommandListItem> {
 
     public ReorderedCell() {
         ListCell thisCell = this;
@@ -18,7 +18,7 @@ public class ReorderedCell extends ListCell<Command> {
 
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            content.putString(getItem().getName());
+            content.putString(getItem().getCommandName());
             dragboard.setContent(content);
 
             event.consume();
@@ -61,7 +61,7 @@ public class ReorderedCell extends ListCell<Command> {
 
             if (!(gestureSource instanceof ReorderedCell)) {
                 if (db.hasString()) {
-                    this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), new Command(db.getString()));
+                    this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), new CommandListItem(db.getString()));
                     success = true;
                 }
             } else if (gestureSource != thisCell) {
@@ -72,9 +72,9 @@ public class ReorderedCell extends ListCell<Command> {
 
                     int sourceIdx = gestureSourceCell.getIndex();
                     int targetIndex = gestureTargetCell.getIndex();
-                    ObservableList<Command> items = this.getListView().getItems();
+                    ObservableList<CommandListItem> items = this.getListView().getItems();
 
-                    Command sourceTempContent = items.get(sourceIdx);
+                    CommandListItem sourceTempContent = items.get(sourceIdx);
                     items.set(sourceIdx, items.get(targetIndex));
                     items.set(targetIndex, sourceTempContent);
 
@@ -91,13 +91,13 @@ public class ReorderedCell extends ListCell<Command> {
     }
 
     @Override
-    protected void updateItem(Command item, boolean empty) {
+    protected void updateItem(CommandListItem item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {
             setGraphic(null);
         } else {
-            setText(item.getName());
+            setText(item.getCommandName());
         }
     }
 }

@@ -1,8 +1,8 @@
 package dk.plpa.scheme;
 
 
-import dk.plpa.gui.elements.Command;
-import dk.plpa.gui.elements.Position;
+import dk.plpa.gui.listViewsComponents.CommandListItem;
+import dk.plpa.robot.RobotPosition;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class SchemeTypesMapper {
         }
     }
 
-    public static <T> String createLoadCommandSchemeArgument(Position startingPosition, List<Command> javaList) {
+    public static <T> String createLoadCommandSchemeArgument(RobotPosition startingPosition, List<CommandListItem> javaList) {
         if (javaList == null || javaList.isEmpty()) {
             return "'()";
         } else {
@@ -53,14 +53,14 @@ public class SchemeTypesMapper {
             s.append("(list (list " + startingPosition.getXCoord() + " " + startingPosition.getYCoord() + "\"" + startingPosition.getDirection().getValue() + "\"" +") ");
 
             for (int i = 0; i < javaList.size(); i++) {
-                String command = javaList.get(i).getName().replace(" ", "");
-                String arg;
-                if(Objects.equals(command, "PICKOBJECT")) {
-                    arg = (javaList.get(i).getArg().isEmpty() ? "\"obj\"" : "\"" + javaList.get(i).getArg() + "\"");
+                String commandName = javaList.get(i).getCommandName().replace(" ", "");
+                String commandParam;
+                if(Objects.equals(commandName, "PICKOBJECT")) {
+                    commandParam = (javaList.get(i).getCommandParam().isEmpty() ? "\"obj\"" : "\"" + javaList.get(i).getCommandParam() + "\"");
                 } else {
-                    arg = (javaList.get(i).getArg().isEmpty() ? "1" : javaList.get(i).getArg());
+                    commandParam = (javaList.get(i).getCommandParam().isEmpty() ? "1" : javaList.get(i).getCommandParam());
                 }
-                s.append("(list \"" + command + "\" " + arg + ")");
+                s.append("(list \"" + commandName + "\" " + commandParam + ")");
                 s.append(" ");
             }
             s.append(')');

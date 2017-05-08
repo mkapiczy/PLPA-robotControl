@@ -1,4 +1,4 @@
-package dk.plpa.gui.elements;
+package dk.plpa.gui.floorComponents;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;

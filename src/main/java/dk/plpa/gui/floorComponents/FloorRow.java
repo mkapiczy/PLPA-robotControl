@@ -1,4 +1,4 @@
-package dk.plpa.gui.elements;
+package dk.plpa.gui.floorComponents;
 
 import lombok.Getter;
 import lombok.Setter;

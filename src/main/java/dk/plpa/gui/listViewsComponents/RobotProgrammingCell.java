@@ -1,4 +1,4 @@
-package dk.plpa.gui.elements;
+package dk.plpa.gui.listViewsComponents;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,14 +17,14 @@ public class RobotProgrammingCell extends ReorderedCell {
     private TextField textField;
     private Pane pane = new Pane();
     private Button button = new Button("-");
-    private Command lastItem;
+    private CommandListItem lastItem;
 
     public RobotProgrammingCell() {
         super();
         textField = new TextField();
         textField.setMaxWidth(60);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            lastItem.setArg(newValue);
+            lastItem.setCommandParam(newValue);
         });
         hbox.getChildren().addAll(label, pane, textField, button);
         HBox.setHgrow(pane, Priority.ALWAYS);
@@ -32,7 +32,7 @@ public class RobotProgrammingCell extends ReorderedCell {
     }
 
     @Override
-    protected void updateItem(Command item, boolean empty) {
+    protected void updateItem(CommandListItem item, boolean empty) {
         super.updateItem(item, empty);
         this.setText(null);
         if (empty) {
@@ -40,14 +40,14 @@ public class RobotProgrammingCell extends ReorderedCell {
             this.setGraphic(null);
         } else {
             lastItem = item;
-            this.label.setText(item != null ? item.getName() : "<null>");
-            if (("DROP OBJECT").equals(item.getName()) && (textField != null)) {
+            this.label.setText(item != null ? item.getCommandName() : "<null>");
+            if (("DROP OBJECT").equals(item.getCommandName()) && (textField != null)) {
                textField.setDisable(true);
                textField.setVisible(false);
             } else{
                 textField.setDisable(false);
                 textField.setVisible(true);
-                textField.setText(item.getArg());
+                textField.setText(item.getCommandParam());
             }
             setGraphic(hbox);
         }
