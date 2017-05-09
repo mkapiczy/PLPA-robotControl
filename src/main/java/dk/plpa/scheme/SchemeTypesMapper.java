@@ -1,6 +1,7 @@
 package dk.plpa.scheme;
 
 
+import dk.plpa.gui.listViewsComponents.CommandEnum;
 import dk.plpa.gui.listViewsComponents.CommandListItem;
 import dk.plpa.robot.RobotPosition;
 
@@ -53,9 +54,9 @@ public class SchemeTypesMapper {
             s.append("(list (list " + startingPosition.getXCoord() + " " + startingPosition.getYCoord() + "\"" + startingPosition.getDirection().getValue() + "\"" +") ");
 
             for (int i = 0; i < javaList.size(); i++) {
-                String commandName = javaList.get(i).getCommandName().replace(" ", "");
+                String commandName = javaList.get(i).getCommand().getSchemeCommand().replace(" ", "");
                 String commandParam;
-                if(Objects.equals(commandName, "PICKOBJECT")) {
+                if(Objects.equals(commandName, CommandEnum.PICK_OBJECT.getSchemeCommand())) {
                     commandParam = (javaList.get(i).getCommandParam().isEmpty() ? "\"obj\"" : "\"" + javaList.get(i).getCommandParam() + "\"");
                 } else {
                     commandParam = (javaList.get(i).getCommandParam().isEmpty() ? "1" : javaList.get(i).getCommandParam());

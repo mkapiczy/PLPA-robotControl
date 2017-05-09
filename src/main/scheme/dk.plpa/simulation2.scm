@@ -1,7 +1,12 @@
-(include "robot.scm")
+;(include "robot.scm")
 
-(define commands '((0 8 "E") (MoveForward 8) (TurnLeft 1) (MoveForward 7) (TurnLeft 1) (MoveForward 2) (TurnLeft 1) (PickObject "P1")
-    (TurnLeft 1) (MoveForward 2) (TurnRight 1) (MoveForward 7) (DropObject 1)))
+;(define commands '((0 8 "E") (MoveForward 8) (TurnLeft 1) (MoveForward 7) (TurnLeft 1) (MoveForward 2) (TurnLeft 1) (PickObject "P1")(TurnLeft 1) (MoveForward 2) (TurnRight 1) (MoveForward 7) (DropObject 1)))
+
+(define commands '())
+
+(define (loadCommands values)
+    (set! commands values))
+
 (define commandPointer 0)
 (define robotState (robot 0 0 "E" 0 '()))
 
@@ -46,3 +51,9 @@
         (step (eval command) steps)
         (set! commandPointer (+ commandPointer 1))
     )))
+
+(define (printGlobalValues)
+    (for-each (lambda (commands)
+    (display commands)
+    (newline))
+    commands))

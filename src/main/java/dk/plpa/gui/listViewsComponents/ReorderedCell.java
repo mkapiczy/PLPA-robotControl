@@ -18,7 +18,7 @@ public class ReorderedCell extends ListCell<CommandListItem> {
 
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            content.putString(getItem().getCommandName());
+            content.putString(getItem().getCommand().getCommandName());
             dragboard.setContent(content);
 
             event.consume();
@@ -61,7 +61,7 @@ public class ReorderedCell extends ListCell<CommandListItem> {
 
             if (!(gestureSource instanceof ReorderedCell)) {
                 if (db.hasString()) {
-                    this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), new CommandListItem(db.getString()));
+                    this.getListView().getItems().add(((ReorderedCell) event.getGestureTarget()).getIndex(), new CommandListItem(CommandEnum.getFromCommandName(db.getString())));
                     success = true;
                 }
             } else if (gestureSource != thisCell) {
@@ -97,7 +97,7 @@ public class ReorderedCell extends ListCell<CommandListItem> {
         if (empty || item == null) {
             setGraphic(null);
         } else {
-            setText(item.getCommandName());
+            setText(item.getCommand().getCommandName());
         }
     }
 }

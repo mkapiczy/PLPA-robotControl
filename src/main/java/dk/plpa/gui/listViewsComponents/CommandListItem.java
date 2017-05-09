@@ -6,16 +6,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommandListItem {
-    String commandName;
+    CommandEnum command;
     String commandParam;
 
-    public CommandListItem(String commandName) {
-        this.commandName = commandName;
+    public CommandListItem(CommandEnum command) {
+        this.command = command;
         commandParam = "";
     }
 
     @Override
     public String toString() {
-        return this.commandName;
+        return this.command.getCommandName();
     }
 }

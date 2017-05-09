@@ -40,8 +40,8 @@ public class RobotProgrammingCell extends ReorderedCell {
             this.setGraphic(null);
         } else {
             lastItem = item;
-            this.label.setText(item != null ? item.getCommandName() : "<null>");
-            if (("DROP OBJECT").equals(item.getCommandName()) && (textField != null)) {
+            this.label.setText(item != null ? item.getCommand().getCommandName() : "<null>");
+            if ((CommandEnum.DROP_OBJECT).equals(item.getCommand()) && (textField != null)) {
                textField.setDisable(true);
                textField.setVisible(false);
             } else{

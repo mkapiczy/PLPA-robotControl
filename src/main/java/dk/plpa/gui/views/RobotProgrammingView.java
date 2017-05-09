@@ -1,6 +1,7 @@
 package dk.plpa.gui.views;
 
 
+import dk.plpa.gui.listViewsComponents.CommandEnum;
 import dk.plpa.gui.listViewsComponents.CommandListItem;
 import dk.plpa.gui.listViewsComponents.RobotProgrammingCell;
 import dk.plpa.robot.RobotDirectionEnum;
@@ -65,7 +66,7 @@ public class RobotProgrammingView extends AbstractView {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString()) {
-                commandsList.getItems().add((new CommandListItem(db.getString())));
+                commandsList.getItems().add((new CommandListItem(CommandEnum.getFromCommandName(db.getString()))));
                 success = true;
             }
             event.setDropCompleted(success);

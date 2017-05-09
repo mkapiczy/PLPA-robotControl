@@ -41,5 +41,12 @@ public class AnimationView extends AbstractView {
         vBox.setAlignment(Pos.CENTER);
         this.getChildren().clear();
         this.getChildren().add(vBox);
+        runSimulationButton.setOnMouseClicked(event -> {
+            //Following calls scheme code for moving robot. It throws an exception since moveRobot returns a procedure.
+            //SchemeProcedure moveRobotProcedure = new SchemeProcedure("moveRobot");
+            //moveRobotProcedure.apply0();
+            //Object obj =  moveRobotProcedure.apply0();
+            //moveRobotProcedure.apply0();
+        });
     }
 }

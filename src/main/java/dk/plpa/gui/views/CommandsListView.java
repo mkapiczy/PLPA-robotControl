@@ -1,6 +1,7 @@
 package dk.plpa.gui.views;
 
 
+import dk.plpa.gui.listViewsComponents.CommandEnum;
 import dk.plpa.gui.listViewsComponents.CommandListCell;
 import dk.plpa.gui.listViewsComponents.CommandListItem;
 import javafx.collections.FXCollections;
@@ -17,8 +18,8 @@ public class CommandsListView extends AbstractView {
 
     public void setUpViewElements() {
         // TODO floorComponents read from file
-        ObservableList<CommandListItem> commands = FXCollections.observableArrayList(new CommandListItem("MOVE FORWARD"), new CommandListItem("TURN RIGHT"),
-                new CommandListItem("TURN LEFT"), new CommandListItem("PICK OBJECT"), new CommandListItem("DROP OBJECT"));
+        ObservableList<CommandListItem> commands = FXCollections.observableArrayList(new CommandListItem(CommandEnum.MOVE_FORWARD), new CommandListItem(CommandEnum.TURN_RIGHT),
+                new CommandListItem(CommandEnum.TURN_LEFT), new CommandListItem(CommandEnum.PICK_OBJECT), new CommandListItem(CommandEnum.DROP_OBJECT));
         commandsList.setMinWidth(getCanvas().getWidth());
         commandsList.setItems(commands);
 

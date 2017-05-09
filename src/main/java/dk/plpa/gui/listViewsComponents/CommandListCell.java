@@ -27,7 +27,7 @@ public class CommandListCell extends ListCell<CommandListItem> {
     public void updateItem(CommandListItem item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null) {
-            setText(item.getCommandName());
+            setText(item.getCommand().getCommandName());
         }
     }
 }
