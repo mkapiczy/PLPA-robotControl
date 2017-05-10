@@ -1,35 +1,59 @@
-;(include "robot.scm") Uncomment this for testing in PetiteScheme
+;(include "robot.scm")
+
+;(define commands '((0 8 "E") (MoveForward 8) (TurnLeft 1) (MoveForward 7) (TurnLeft 1) (MoveForward 2) (TurnLeft 1) (PickObject "P1")(TurnLeft 1) (MoveForward 2) (TurnRight 1) (MoveForward 7) (DropObject 1)))
 
 (define commands '())
 
 (define (loadCommands values)
     (set! commands values))
 
-(define (printGlobalValues)
-    (for-each (lambda (commands)
-    (display commands)
-    (newline))
-    commands))
+(define commandPointer 0)
+(define robotState (robot 0 0 "E" 0 '()))
 
-(define robotState
-      (lambda (init)
-          (let ((state init))
+(define getNextRobotState
+      (lambda ()
               (lambda (proc steps)
-                  (set! state (proc state steps))
-                  state))))
-
-
+              (if (= commandPointer 0)
+                (set! robotState (robot (list-ref (list-ref commands commandPointer)0) (list-ref (list-ref commands commandPointer)1) (list-ref (list-ref commands commandPointer)2) 0 '()))
+                (set! robotState (proc robotState steps))
+              )
+            (set! commandPointer (+ commandPointer 1))
+            (send 'getRobotStateAsList robotState))))
 
 (define (MoveForward state noOfSteps)
     (send 'moveForward state noOfSteps)
+)
+
+(define (TurnRight state noOfSteps)
+    (send 'turnRight state)
+)
+
+(define (TurnLeft state noOfSteps)
+    (send 'turnLeft state)
+)
+
+(define (PickObject state object)
+    (send 'pickObject state object)
+)
+
+(define (DropObject state object)
+    (send 'dropObject state)
 )
 
 (define (GetX state)
     (send 'getX robotState)
 )
 
+(define step (getNextRobotState))
 
+(define (moveRobot)
+    (let ((command (list-ref (list-ref commands commandPointer)0)))
+    (let ((steps (list-ref (list-ref commands commandPointer)1)))
+        (step (eval command) steps)
+    )))
 
-(define r (robot 8 5 "S" 0 '()))
-
-(define step (robotState r))
+(define (printGlobalValues)
+    (for-each (lambda (commands)
+    (display commands)
+    (newline))
+    commands))

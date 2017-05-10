@@ -12,6 +12,9 @@
 
            (getCarriedObject (lambda () carriedObject))
 
+           (getRobotStateAsList (lambda ()
+               (list x y direction errorCode carriedObject)))
+
            (moveForward (lambda (amountOfSteps)
                           (if (> amountOfSteps 0)
                               (send 'moveForward (moveForwardOneStep) (- amountOfSteps 1))
@@ -177,6 +180,7 @@
           ((eq? message 'pickObject)  pickObject)
           ((eq? message 'dropObject)  dropObject)
           ((eq? message 'type-of) type-of)
+          ((eq? message 'getRobotStateAsList) getRobotStateAsList)
           (else (error "Message not understood"))))
   )
 )
