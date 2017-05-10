@@ -33,6 +33,15 @@ public class FloorPane extends GridPane {
         }
     }
 
+    public Tile getTileByPosition(int x, int y) {
+        Tile tile = null;
+        if (y >= 0 && y <= this.rows.size()) {
+            FloorRow row = this.rows.get(y);
+            tile = row.getTile(x);
+        }
+        return tile;
+    }
+
 
 }
 

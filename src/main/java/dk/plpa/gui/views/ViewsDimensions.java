@@ -1,4 +1,4 @@
-package dk.plpa.gui;
+package dk.plpa.gui.views;
 
 
 public class ViewsDimensions {

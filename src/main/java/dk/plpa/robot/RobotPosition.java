@@ -6,17 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RobotPosition {
-    private int xCoord;
-    private int yCoord;
+    private int x;
+    private int y;
     private RobotDirectionEnum direction;
 
-    public RobotPosition(int xCoord, int yCoord, RobotDirectionEnum direction) {
-        this.xCoord = xCoord;
-        this.yCoord = yCoord;
+    public RobotPosition(int x, int y, RobotDirectionEnum direction) {
+        this.x = x;
+        this.y = y;
         this.direction = direction;
     }
 
-    public RobotPosition() {
-
-    }
 }

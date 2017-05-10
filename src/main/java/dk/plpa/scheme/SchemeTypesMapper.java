@@ -51,7 +51,7 @@ public class SchemeTypesMapper {
             return "'()";
         } else {
             StringBuilder s = new StringBuilder();
-            s.append("(list (list " + startingPosition.getXCoord() + " " + startingPosition.getYCoord() + "\"" + startingPosition.getDirection().getValue() + "\"" +") ");
+            s.append("(list (list " + startingPosition.getX() + " " + startingPosition.getY() + "\"" + startingPosition.getDirection().getValue() + "\"" +") ");
 
             for (int i = 0; i < javaList.size(); i++) {
                 String commandName = javaList.get(i).getCommand().getSchemeCommand().replace(" ", "");
@@ -61,7 +61,7 @@ public class SchemeTypesMapper {
                 } else {
                     commandParam = (javaList.get(i).getCommandParam().isEmpty() ? "1" : javaList.get(i).getCommandParam());
                 }
-                s.append("(list \"" + commandName + "\" " + commandParam + ")");
+                s.append("(list " + commandName + " " + commandParam + ")");
                 s.append(" ");
             }
             s.append(')');

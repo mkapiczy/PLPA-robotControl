@@ -22,4 +22,13 @@ public enum RobotDirectionEnum {
     public int getImageRotation () {
         return imgRotation;
     }
+
+    public static RobotDirectionEnum findByValue(String value){
+        for(RobotDirectionEnum v : values()){
+            if( v.value.equals(value)){
+                return v;
+            }
+        }
+        return null;
+    }
 }

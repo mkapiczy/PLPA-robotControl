@@ -6,8 +6,8 @@ import dk.plpa.gui.listViewsComponents.CommandListItem;
 import dk.plpa.gui.listViewsComponents.RobotProgrammingCell;
 import dk.plpa.robot.RobotDirectionEnum;
 import dk.plpa.robot.RobotPosition;
+import dk.plpa.scheme.LoadCommandsSchemeProcedure;
 import dk.plpa.scheme.SchemeProcedure;
-import dk.plpa.scheme.SchemeTypesMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -75,14 +75,10 @@ public class RobotProgrammingView extends AbstractView {
         });
 
         restartProgrammingButton = new Button("Restart programming");
-        restartProgrammingButton.setOnMouseClicked(event -> {
-            restartProgramming();
-        });
+        restartProgrammingButton.setOnMouseClicked(event -> restartProgramming());
 
         loadProgramToRobotButton = new Button("Load program into robot memory");
-        loadProgramToRobotButton.setOnMouseClicked(event -> {
-            loadProceduresIntoScheme();
-        });
+        loadProgramToRobotButton.setOnMouseClicked(event -> loadProceduresIntoScheme());
         vBox.getChildren().addAll(startingPositionLabel, commandsList, restartProgrammingButton, loadProgramToRobotButton);
         vBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(commandsList, Priority.ALWAYS);
@@ -90,12 +86,9 @@ public class RobotProgrammingView extends AbstractView {
     }
 
     private void loadProceduresIntoScheme() {
-        SchemeProcedure loadProcedure = new SchemeProcedure("loadCommands");
+        LoadCommandsSchemeProcedure.loadProcedures(startingPosition, commandsList.getItems());
 
-        String s = SchemeTypesMapper.createLoadCommandSchemeArgument(startingPosition, commandsList.getItems());
-
-        loadProcedure.apply1(s);
-
+        //TODO To remove, used only for testing
         SchemeProcedure displayProcedure = new SchemeProcedure("printGlobalValues");
         displayProcedure.apply0();
     }
