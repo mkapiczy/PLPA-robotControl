@@ -3,6 +3,7 @@ package dk.plpa.gui.views;
 
 import dk.plpa.gui.floorComponents.FloorPane;
 import dk.plpa.gui.robot.RobotSprite;
+import dk.plpa.robot.RobotCodesEnum;
 import dk.plpa.robot.RobotState;
 import dk.plpa.scheme.MoveRobotSchemeProcedure;
 import javafx.animation.AnimationTimer;
@@ -45,7 +46,7 @@ public class AnimationView extends AbstractView {
         runSimulationButton = new Button("Run simulation");
         runSimulationButton.setPadding(new Insets(25, 25, 25, 25));
         Group group = new Group();
-        group.getChildren().addAll(floor, getCanvas());
+        group.getChildren().addAll(floor, this.getCanvas());
         vBox.getChildren().addAll(group, runSimulationButton);
         vBox.setAlignment(Pos.CENTER);
         this.getChildren().clear();
@@ -61,17 +62,27 @@ public class AnimationView extends AbstractView {
             private long lastUpdate = 0;
             private int calledSchemeProcedure = 0;
             private boolean shouldCallNextSchemeProcedure = true;
+            private boolean errorOccured = false;
             private List<RobotState> robotMiddleStates = new ArrayList<>();
 
             public void handle(long currentNanoTime) {
                 if (currentNanoTime - lastUpdate >= animationInterval) {
                     if (shouldCallNextSchemeProcedure) {
                         RobotState nextRobotState = MoveRobotSchemeProcedure.moveRobot();
-                        if (calledSchemeProcedure == 0) {
-                            robotSprite.setRobotInitialState(nextRobotState);
-                        } else {
-                            robotMiddleStates = robotSprite.moveRobotTo(nextRobotState);
-                            shouldCallNextSchemeProcedure = false;
+                        int errorCode = nextRobotState.getErrorCode();
+                        if (errorCode == RobotCodesEnum.OK.getValue() || errorCode == RobotCodesEnum.ERROR.getValue()) {
+                            if (calledSchemeProcedure == 0) {
+                                robotSprite.setRobotInitialState(nextRobotState);
+                            } else {
+                                robotMiddleStates = robotSprite.moveRobotTo(nextRobotState);
+                                shouldCallNextSchemeProcedure = false;
+                                if (errorCode == RobotCodesEnum.ERROR.getValue()) {
+                                    errorOccured = true;
+                                }
+                            }
+                        } else if (errorCode == RobotCodesEnum.TURNED_OFF.getValue()) {
+                            System.out.println("Simulation finished. Robot turned off");
+                            this.stop();
                         }
                         calledSchemeProcedure++;
                     }
@@ -81,11 +92,11 @@ public class AnimationView extends AbstractView {
                         robotSprite.setRobotState(nextState);
                         robotMiddleStates.remove(nextState);
                     } else {
+                        if (errorOccured) {
+                            System.out.println("Error");
+                            this.stop();
+                        }
                         shouldCallNextSchemeProcedure = true;
-                    }
-
-                    if (calledSchemeProcedure == 20) {
-                        this.stop();
                     }
 
                     robotSprite.draw(gc, floor);

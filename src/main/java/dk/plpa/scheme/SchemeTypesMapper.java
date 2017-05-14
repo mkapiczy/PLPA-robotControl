@@ -64,6 +64,7 @@ public class SchemeTypesMapper {
                 s.append("(list " + commandName + " " + commandParam + ")");
                 s.append(" ");
             }
+            s.append("(list TurnOffRobot 1) ");
             s.append(')');
             return s.toString();
         }
