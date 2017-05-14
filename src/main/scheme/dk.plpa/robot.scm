@@ -33,12 +33,7 @@
                                         carriedObject))
                                      (begin
                                        (display (string-append "Movement forward from " (number->string x) " " (number->string y) " not allowed"))
-                                       (robot
-                                        x
-                                        y
-                                        direction
-                                        -1
-                                        carriedObject)))
+                                       (selfWithError)))
                                  ))
 
            (turnRight (lambda ()
@@ -71,8 +66,8 @@
                                 objectToPick))
                                 (begin
                              (display (string-append "Robot can not pick object " objectToPick))
-                             (self)))
-                         ))
+                                (selfWithError))
+                         )))
 
            (dropObject (lambda ()
                          (if (canDropObject)
@@ -86,7 +81,7 @@
                                 '()))
                             (begin
                              (display (string-append "Robot can not drop object - there is no carried object or the position does not allow for droping of objects"))
-                             (self))
+                             (selfWithError))
                              )
                          )
                        )
@@ -159,6 +154,15 @@
              y
              direction
              errorCode
+             carriedObject)
+            ))
+
+    (selfWithError (lambda ()
+            (robot
+             x
+             y
+             direction
+             -1
              carriedObject)
             ))
 
