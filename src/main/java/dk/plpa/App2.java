@@ -1,5 +1,8 @@
 package dk.plpa;
 
+import dk.plpa.robot.RobotDirectionEnum;
+import dk.plpa.robot.RobotState;
+
 public class App2 {
 
 
@@ -38,6 +41,8 @@ public class App2 {
 
 
     }
+
+
 
 
 }

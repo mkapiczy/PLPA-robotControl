@@ -5,7 +5,7 @@ import dk.plpa.gui.listViewsComponents.CommandEnum;
 import dk.plpa.gui.listViewsComponents.CommandListItem;
 import dk.plpa.gui.listViewsComponents.RobotProgrammingCell;
 import dk.plpa.robot.RobotDirectionEnum;
-import dk.plpa.robot.RobotPosition;
+import dk.plpa.robot.RobotState;
 import dk.plpa.scheme.LoadCommandsSchemeProcedure;
 import dk.plpa.scheme.SchemeProcedure;
 import javafx.collections.FXCollections;
@@ -27,7 +27,7 @@ public class RobotProgrammingView extends AbstractView {
 
     private VBox vBox = new VBox();
     private ListView<String> startingPositionLabel = new ListView<>();
-    private RobotPosition startingPosition;
+    private RobotState startingPosition;
     private ListView<CommandListItem> commandsList = new ListView<>();
     private Button restartProgrammingButton;
     private Button loadProgramToRobotButton;
@@ -40,7 +40,7 @@ public class RobotProgrammingView extends AbstractView {
         String s = "STARTING POSITION x: " + x + " y: " + y + " direction: " + direction.getValue();
         ObservableList<String> commands = FXCollections.observableArrayList(s);
         startingPositionLabel.setItems(commands);
-        startingPosition = new RobotPosition(x, y, direction);
+        startingPosition = new RobotState(x, y, direction, 0, "");
     }
 
     public void setUpViewElements() {

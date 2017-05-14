@@ -3,7 +3,7 @@ package dk.plpa.gui.views;
 
 import dk.plpa.gui.floorComponents.FloorPane;
 import dk.plpa.gui.robot.RobotSprite;
-import dk.plpa.robot.RobotPosition;
+import dk.plpa.robot.RobotState;
 import dk.plpa.scheme.MoveRobotSchemeProcedure;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -59,32 +59,32 @@ public class AnimationView extends AbstractView {
         new AnimationTimer() {
             private final int animationInterval = 500000000;
             private long lastUpdate = 0;
-            private int calledProcedure = 0;
-            private boolean shouldCallNextProcedure = true;
-            private List<RobotPosition> robotMovementPositions = new ArrayList<>();
+            private int calledSchemeProcedure = 0;
+            private boolean shouldCallNextSchemeProcedure = true;
+            private List<RobotState> robotMiddleStates = new ArrayList<>();
 
             public void handle(long currentNanoTime) {
                 if (currentNanoTime - lastUpdate >= animationInterval) {
-                    if (shouldCallNextProcedure) {
-                        RobotPosition nextRobotPosition = MoveRobotSchemeProcedure.moveRobot();
-                        if (calledProcedure == 0) {
-                            robotSprite.setRobotInitialPosition(nextRobotPosition);
+                    if (shouldCallNextSchemeProcedure) {
+                        RobotState nextRobotState = MoveRobotSchemeProcedure.moveRobot();
+                        if (calledSchemeProcedure == 0) {
+                            robotSprite.setRobotInitialState(nextRobotState);
                         } else {
-                            robotMovementPositions = robotSprite.moveRobotTo(nextRobotPosition);
-                            shouldCallNextProcedure = false;
+                            robotMiddleStates = robotSprite.moveRobotTo(nextRobotState);
+                            shouldCallNextSchemeProcedure = false;
                         }
-                        calledProcedure++;
-                    } else {
-                        if (!robotMovementPositions.isEmpty()) {
-                            RobotPosition nextPosition = robotMovementPositions.get(0);
-                            robotSprite.setRobotPosition(nextPosition);
-                            robotMovementPositions.remove(nextPosition);
-                        } else {
-                            shouldCallNextProcedure = true;
-                        }
+                        calledSchemeProcedure++;
                     }
 
-                    if (calledProcedure == 10) {
+                    if (!robotMiddleStates.isEmpty()) {
+                        RobotState nextState = robotMiddleStates.get(0);
+                        robotSprite.setRobotState(nextState);
+                        robotMiddleStates.remove(nextState);
+                    } else {
+                        shouldCallNextSchemeProcedure = true;
+                    }
+
+                    if (calledSchemeProcedure == 20) {
                         this.stop();
                     }
 

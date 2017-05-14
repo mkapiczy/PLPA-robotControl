@@ -3,7 +3,7 @@ package dk.plpa.scheme;
 
 import dk.plpa.gui.listViewsComponents.CommandEnum;
 import dk.plpa.gui.listViewsComponents.CommandListItem;
-import dk.plpa.robot.RobotPosition;
+import dk.plpa.robot.RobotState;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +46,7 @@ public class SchemeTypesMapper {
         }
     }
 
-    public static <T> String createLoadCommandSchemeArgument(RobotPosition startingPosition, List<CommandListItem> javaList) {
+    public static <T> String createLoadCommandSchemeArgument(RobotState startingPosition, List<CommandListItem> javaList) {
         if (javaList == null || javaList.isEmpty()) {
             return "'()";
         } else {
