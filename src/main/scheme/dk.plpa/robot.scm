@@ -86,6 +86,15 @@
                          )
                        )
 
+           (turnOff (lambda ()
+                (robot
+                    x
+                    y
+                    direction
+                    1
+                    carriedObject)
+                    ))
+
     (getNextXPosition (lambda (movementDirection)
                         (if (equal? "FORWARD" movementDirection)
                             (cond
@@ -180,6 +189,7 @@
           ((eq? message 'moveForward)  moveForward)
           ((eq? message 'turnRight)  turnRight)
           ((eq? message 'turnLeft)  turnLeft)
+          ((eq? message 'turnOff) turnOff)
           ((eq? message 'getErrorCode)  getErrorCode)
           ((eq? message 'pickObject)  pickObject)
           ((eq? message 'dropObject)  dropObject)

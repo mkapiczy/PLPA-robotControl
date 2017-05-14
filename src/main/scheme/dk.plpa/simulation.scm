@@ -44,6 +44,10 @@
     (send 'getX robotState)
 )
 
+(define (TurnOffRobot state controlCode)
+    (send 'turnOff robotState)
+)
+
 (define step (getNextRobotState))
 
 (define (moveRobot)
