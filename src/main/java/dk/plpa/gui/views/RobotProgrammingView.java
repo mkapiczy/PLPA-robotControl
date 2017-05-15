@@ -126,7 +126,7 @@ public class RobotProgrammingView extends AbstractView {
 
     public void askUserToChooseRobotStartingPosition() {
         disableOtherViewElements();
-
+        animationView.getCanvas().getGraphicsContext2D().clearRect(0, 0, 1024, 1024);
         GraphicsContext gc = this.getCanvas().getGraphicsContext2D();
         gc.fillText("Choose robot starting position", 100, 100);
 
@@ -185,6 +185,7 @@ public class RobotProgrammingView extends AbstractView {
         }
     }
 
+    //TODO Create some generic Alert Creator component.
     private void displayWrongTileAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Wrong tile!");

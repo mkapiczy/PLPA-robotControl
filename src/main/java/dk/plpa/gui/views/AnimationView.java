@@ -4,6 +4,7 @@ package dk.plpa.gui.views;
 import dk.plpa.gui.floorComponents.FloorPane;
 import dk.plpa.gui.robot.RobotSprite;
 import dk.plpa.robot.RobotState;
+import dk.plpa.scheme.AreCommandsLoadedSchemeProcedure;
 import dk.plpa.scheme.MoveRobotSchemeProcedure;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -56,97 +57,109 @@ public class AnimationView extends AbstractView {
     }
 
     private void runAnimation() {
-        GraphicsContext gc = this.getCanvas().getGraphicsContext2D();
+        if (AreCommandsLoadedSchemeProcedure.areCommandsLoadedToRobot()) {
+            GraphicsContext gc = this.getCanvas().getGraphicsContext2D();
 
-        new AnimationTimer() {
-            private final int animationInterval = 500000000;
-            private RobotSprite robotSprite = new RobotSprite();
-            private long lastUpdate = 0;
-            private int calledSchemeProcedure = 0;
-            private boolean shouldCallNextSchemeProcedure = true;
-            private boolean errorOccured = false;
-            private List<RobotState> robotMiddleStates = new ArrayList<>();
+            new AnimationTimer() {
+                private final int animationInterval = 500000000;
+                private RobotSprite robotSprite = new RobotSprite();
+                private long lastUpdate = 0;
+                private int calledSchemeProcedure = 0;
+                private boolean shouldCallNextSchemeProcedure = true;
+                private boolean errorOccured = false;
+                private List<RobotState> robotMiddleStates = new ArrayList<>();
 
-            public void handle(long currentNanoTime) {
-                setOtherViewsMouseTransparent();
+                public void handle(long currentNanoTime) {
+                    setOtherViewsMouseTransparent();
 
-                if (currentNanoTime - lastUpdate >= animationInterval) {
-                    if (shouldCallNextSchemeProcedure) {
-                        RobotState nextRobotState = MoveRobotSchemeProcedure.moveRobot();
-                        robotProgrammingView.highlightCurrentlyRunningProcedure(calledSchemeProcedure);
+                    if (currentNanoTime - lastUpdate >= animationInterval) {
+                        if (shouldCallNextSchemeProcedure) {
+                            RobotState nextRobotState = MoveRobotSchemeProcedure.moveRobot();
+                            robotProgrammingView.highlightCurrentlyRunningProcedure(calledSchemeProcedure);
 
-                        if (nextRobotState.isRobotRunningOK() || nextRobotState.isRobotInErrorState()) {
-                            if (calledSchemeProcedure == 0) {
-                                robotSprite.setRobotInitialState(nextRobotState);
-                            } else {
-                                robotMiddleStates = robotSprite.moveRobotTo(nextRobotState);
-                                shouldCallNextSchemeProcedure = false;
-                                if (nextRobotState.isRobotInErrorState()) {
-                                    errorOccured = true;
+                            if (nextRobotState.isRobotRunningOK() || nextRobotState.isRobotInErrorState()) {
+                                if (calledSchemeProcedure == 0) {
+                                    robotSprite.setRobotInitialState(nextRobotState);
+                                } else {
+                                    robotMiddleStates = robotSprite.moveRobotTo(nextRobotState);
+                                    shouldCallNextSchemeProcedure = false;
+                                    if (nextRobotState.isRobotInErrorState()) {
+                                        errorOccured = true;
+                                    }
                                 }
+                            } else if (nextRobotState.isRobotTurnedOff()) {
+                                endAnimation();
+                                displayAnimationFinishedDialog();
                             }
-                        } else if (nextRobotState.isRobotTurnedOff()) {
-                            endAnimation();
-                            displayAnimationFinishedDialog();
+                            calledSchemeProcedure++;
                         }
-                        calledSchemeProcedure++;
-                    }
 
-                    if (!robotMiddleStates.isEmpty()) {
-                        setNextRobotState();
-                    } else {
-                        if (errorOccured) {
-                            endAnimation();
-                            displayErrorAlert();
+                        if (!robotMiddleStates.isEmpty()) {
+                            setNextRobotState();
                         } else {
-                            shouldCallNextSchemeProcedure = true;
+                            if (errorOccured) {
+                                endAnimation();
+                                displayErrorAlert();
+                            } else {
+                                shouldCallNextSchemeProcedure = true;
+                            }
                         }
+
+                        robotSprite.draw(gc, floor);
+                        lastUpdate = currentNanoTime;
                     }
 
-                    robotSprite.draw(gc, floor);
-                    lastUpdate = currentNanoTime;
                 }
 
-            }
+                private void setNextRobotState() {
+                    RobotState nextState = robotMiddleStates.get(0);
+                    robotSprite.setRobotState(nextState);
+                    robotMiddleStates.remove(nextState);
+                }
 
-            private void setNextRobotState() {
-                RobotState nextState = robotMiddleStates.get(0);
-                robotSprite.setRobotState(nextState);
-                robotMiddleStates.remove(nextState);
-            }
+                private void endAnimation() {
+                    this.stop();
+                    setOtherViewsAvailable();
+                }
 
-            private void endAnimation() {
-                this.stop();
-                setOtherViewsAvailable();
-            }
+                private void setOtherViewsMouseTransparent() {
+                    robotProgrammingView.setMouseTransparent(true);
+                    commandsListView.setMouseTransparent(true);
+                }
 
-            private void setOtherViewsMouseTransparent() {
-                robotProgrammingView.setMouseTransparent(true);
-                commandsListView.setMouseTransparent(true);
-            }
+                private void setOtherViewsAvailable() {
+                    robotProgrammingView.setMouseTransparent(false);
+                    commandsListView.setMouseTransparent(false);
+                }
 
-            private void setOtherViewsAvailable() {
-                robotProgrammingView.setMouseTransparent(false);
-                commandsListView.setMouseTransparent(false);
-            }
+                private void displayErrorAlert() {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Robot reached not allowed state!");
+                    alert.setContentText("Robot reached not allowed state!");
+                    alert.showAndWait();
+                }
 
-            private void displayErrorAlert() {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Robot reached not allowed state!");
-                alert.setContentText("Robot reached not allowed state!");
-                alert.showAndWait();
-            }
+                private void displayAnimationFinishedDialog() {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Animation finished!");
+                    alert.setHeaderText("Animation finished!");
+                    alert.setContentText("Animation finished!");
+                    alert.showAndWait();
+                }
+            }.start();
 
-            private void displayAnimationFinishedDialog() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Animation finished!");
-                alert.setHeaderText("Animation finished!");
-                alert.setContentText("Animation finished!");
-                alert.showAndWait();
-            }
-        }.start();
+        } else {
+            displayCommandsNotLoadedAlert();
+        }
+    }
 
+    private void displayCommandsNotLoadedAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Commands not loaded!");
+        alert.setHeaderText("Commands not loaded!");
+        alert.setContentText("Can not run animation without commands loaded into robot!");
+        alert.showAndWait();
     }
 
 
