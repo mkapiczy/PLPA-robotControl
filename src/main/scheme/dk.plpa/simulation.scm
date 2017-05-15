@@ -4,10 +4,14 @@
 
 (define commands '())
 
+(define commandPointer 0)
+
 (define (loadCommands values)
     (set! commands values))
 
-(define commandPointer 0)
+(define (resetCommandPointer)
+    (set! commandPointer 0))
+
 (define robotState (robot 0 0 "E" 0 '()))
 
 (define getNextRobotState
@@ -18,6 +22,9 @@
                 (set! robotState (proc robotState steps))
               )
             (set! commandPointer (+ commandPointer 1))
+            (if (or (= (send 'getErrorCode robotState) 1) (= (send 'getErrorCode robotState) -1))
+                (resetCommandPointer)
+            )
             (send 'getRobotStateAsList robotState))))
 
 (define (MoveForward state noOfSteps)
