@@ -4,11 +4,22 @@
 
 (define commands '())
 
+(define commandPointer 0)
+
 (define (loadCommands values)
     (set! commands values))
 
-(define commandPointer 0)
+(define (resetCommandPointer)
+    (set! commandPointer 0))
+
 (define robotState (robot 0 0 "E" 0 '()))
+
+(define (areCommandsLoaded)
+    (if (not (null? commands))
+        #t
+        #f
+    )
+)
 
 (define getNextRobotState
       (lambda ()
@@ -18,6 +29,9 @@
                 (set! robotState (proc robotState steps))
               )
             (set! commandPointer (+ commandPointer 1))
+            (if (or (= (send 'getErrorCode robotState) 1) (= (send 'getErrorCode robotState) -1))
+                (resetCommandPointer)
+            )
             (send 'getRobotStateAsList robotState))))
 
 (define (MoveForward state noOfSteps)
@@ -25,11 +39,11 @@
 )
 
 (define (TurnRight state noOfSteps)
-    (send 'turnRight state)
+    (send 'turnRight state noOfSteps)
 )
 
 (define (TurnLeft state noOfSteps)
-    (send 'turnLeft state)
+    (send 'turnLeft state noOfSteps)
 )
 
 (define (PickObject state object)

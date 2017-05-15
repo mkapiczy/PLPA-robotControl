@@ -11,7 +11,7 @@ public class CommandListItem {
 
     public CommandListItem(CommandEnum command) {
         this.command = command;
-        commandParam = "";
+        this.commandParam = "1";
     }
 
     @Override
