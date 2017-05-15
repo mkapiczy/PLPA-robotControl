@@ -47,6 +47,8 @@ public class App extends Application {
         this.robotProgrammingView = new RobotProgrammingView(ViewsDimensions.ROBOT_PROGRAMMING_VIEW_WIDTH, ViewsDimensions.VIEWS_HEIGHT);
         this.commandsListView = new CommandsListView(ViewsDimensions.COMMANDS_LIST_VIEW_WIDTH, ViewsDimensions.VIEWS_HEIGHT);
         this.theStage = theStage;
+        this.animationView.setRobotProgrammingView(this.robotProgrammingView);
+        this.animationView.setCommandsListView(this.commandsListView);
 
         setUpViews();
 

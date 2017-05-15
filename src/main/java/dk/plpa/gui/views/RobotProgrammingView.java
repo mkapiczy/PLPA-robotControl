@@ -97,4 +97,20 @@ public class RobotProgrammingView extends AbstractView {
         commandsList.getItems().clear();
     }
 
+    public void highlightCurrentlyRunningProcedure(int procedureIndex) {
+        if (procedureIndex == 0) {
+            startingPositionLabel.getSelectionModel().select(procedureIndex);
+        } else {
+            startingPositionLabel.getSelectionModel().clearSelection();
+            // -1 because we've got starting position in another list
+            final int movementProcedureIndex = procedureIndex - 1;
+            if (movementProcedureIndex >= 0 && movementProcedureIndex < this.commandsList.getItems().size()) {
+                this.commandsList.scrollTo(movementProcedureIndex);
+                this.commandsList.getSelectionModel().select(movementProcedureIndex);
+            }
+        }
+
+
+    }
+
 }

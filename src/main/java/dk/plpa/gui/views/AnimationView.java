@@ -3,7 +3,6 @@ package dk.plpa.gui.views;
 
 import dk.plpa.gui.floorComponents.FloorPane;
 import dk.plpa.gui.robot.RobotSprite;
-import dk.plpa.robot.RobotCodesEnum;
 import dk.plpa.robot.RobotState;
 import dk.plpa.scheme.MoveRobotSchemeProcedure;
 import javafx.animation.AnimationTimer;
@@ -12,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -28,7 +28,8 @@ public class AnimationView extends AbstractView {
     private FloorPane floor;
     private Button runSimulationButton;
     private VBox vBox = new VBox();
-    private RobotSprite robotSprite = new RobotSprite();
+    private RobotProgrammingView robotProgrammingView;
+    private CommandsListView commandsListView;
 
     public AnimationView(double width, double height) {
         super(width, height);
@@ -59,6 +60,7 @@ public class AnimationView extends AbstractView {
 
         new AnimationTimer() {
             private final int animationInterval = 500000000;
+            private RobotSprite robotSprite = new RobotSprite();
             private long lastUpdate = 0;
             private int calledSchemeProcedure = 0;
             private boolean shouldCallNextSchemeProcedure = true;
@@ -66,37 +68,39 @@ public class AnimationView extends AbstractView {
             private List<RobotState> robotMiddleStates = new ArrayList<>();
 
             public void handle(long currentNanoTime) {
+                setOtherViewsMouseTransparent();
+
                 if (currentNanoTime - lastUpdate >= animationInterval) {
                     if (shouldCallNextSchemeProcedure) {
                         RobotState nextRobotState = MoveRobotSchemeProcedure.moveRobot();
-                        int errorCode = nextRobotState.getErrorCode();
-                        if (errorCode == RobotCodesEnum.OK.getValue() || errorCode == RobotCodesEnum.ERROR.getValue()) {
+                        robotProgrammingView.highlightCurrentlyRunningProcedure(calledSchemeProcedure);
+
+                        if (nextRobotState.isRobotRunningOK() || nextRobotState.isRobotInErrorState()) {
                             if (calledSchemeProcedure == 0) {
                                 robotSprite.setRobotInitialState(nextRobotState);
                             } else {
                                 robotMiddleStates = robotSprite.moveRobotTo(nextRobotState);
                                 shouldCallNextSchemeProcedure = false;
-                                if (errorCode == RobotCodesEnum.ERROR.getValue()) {
+                                if (nextRobotState.isRobotInErrorState()) {
                                     errorOccured = true;
                                 }
                             }
-                        } else if (errorCode == RobotCodesEnum.TURNED_OFF.getValue()) {
-                            System.out.println("Simulation finished. Robot turned off");
-                            this.stop();
+                        } else if (nextRobotState.isRobotTurnedOff()) {
+                            endAnimation();
+                            displayAnimationFinishedDialog();
                         }
                         calledSchemeProcedure++;
                     }
 
                     if (!robotMiddleStates.isEmpty()) {
-                        RobotState nextState = robotMiddleStates.get(0);
-                        robotSprite.setRobotState(nextState);
-                        robotMiddleStates.remove(nextState);
+                        setNextRobotState();
                     } else {
                         if (errorOccured) {
-                            System.out.println("Error");
-                            this.stop();
+                            endAnimation();
+                            displayErrorAlert();
+                        } else {
+                            shouldCallNextSchemeProcedure = true;
                         }
-                        shouldCallNextSchemeProcedure = true;
                     }
 
                     robotSprite.draw(gc, floor);
@@ -104,7 +108,46 @@ public class AnimationView extends AbstractView {
                 }
 
             }
+
+            private void setNextRobotState() {
+                RobotState nextState = robotMiddleStates.get(0);
+                robotSprite.setRobotState(nextState);
+                robotMiddleStates.remove(nextState);
+            }
+
+            private void endAnimation() {
+                this.stop();
+                this.
+                setOtherViewsAvailable();
+            }
+
+            private void setOtherViewsMouseTransparent() {
+                robotProgrammingView.setMouseTransparent(true);
+                commandsListView.setMouseTransparent(true);
+            }
+
+            private void setOtherViewsAvailable() {
+                robotProgrammingView.setMouseTransparent(false);
+                commandsListView.setMouseTransparent(false);
+            }
+
+            private void displayErrorAlert() {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Robot reached not allowed state!");
+                alert.setContentText("Robot reached not allowed state!");
+                alert.showAndWait();
+            }
+
+            private void displayAnimationFinishedDialog() {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Animation finished!");
+                alert.setHeaderText("Animation finished!");
+                alert.setContentText("Animation finished!");
+                alert.showAndWait();
+            }
         }.start();
+
     }
 
 

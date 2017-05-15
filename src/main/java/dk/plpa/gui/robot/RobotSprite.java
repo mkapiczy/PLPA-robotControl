@@ -114,7 +114,7 @@ public class RobotSprite {
 
     public void draw(GraphicsContext gc, FloorPane floor) {
         Tile tile = floor.getTileByPosition(this.getRobotState().getX(), this.getRobotState().getY());
-        gc.clearRect(0, 0,1024,1024);
+        gc.clearRect(0, 0, 1024, 1024);
         gc.setFill(Color.BLACK);
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(5);

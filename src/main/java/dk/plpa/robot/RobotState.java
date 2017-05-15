@@ -29,4 +29,17 @@ public class RobotState {
         this.carriedObject = stateToCopy.getCarriedObject();
     }
 
+    public boolean isRobotRunningOK() {
+        return this.errorCode == RobotCodesEnum.OK.getValue();
+    }
+
+    public boolean isRobotTurnedOff() {
+        return this.errorCode == RobotCodesEnum.TURNED_OFF.getValue();
+    }
+
+    public boolean isRobotInErrorState() {
+        return this.errorCode == RobotCodesEnum.ERROR.getValue();
+    }
+
+
 }
