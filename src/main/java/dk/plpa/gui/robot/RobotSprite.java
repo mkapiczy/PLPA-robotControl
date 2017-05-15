@@ -55,6 +55,8 @@ public class RobotSprite {
                 movementPositions = moveVertically(currentRobotYPosition, destinationY);
             } else if (!this.robotState.getDirection().equals(destinationDirection)) {
                 movementPositions = rotate(destinationDirection);
+            } else {
+                movementPositions.add(destinedPosition);
             }
 
             return movementPositions;
@@ -122,25 +124,34 @@ public class RobotSprite {
         gc.setLineWidth(5);
         ChangeRobotPicture(this.getRobotState().getDirection());
 
+        if (this.getRobotState().isRobotCarryingObject()) {
+            drawCarriedObject(gc, tile.getLayoutX(), tile.getLayoutY());
+        }
+
         gc.drawImage(this.robotImg, tile.getLayoutX(), tile.getLayoutY());
     }
 
-    public void ChangeRobotPicture(RobotDirectionEnum thisEnum){
+    public void drawCarriedObject(GraphicsContext gc, double x, double y) {
+        gc.fillOval(x, y, 5, 5);
+        gc.setFill(Color.RED);
+    }
 
-        switch (thisEnum){
-            case NORTH :
+    public void ChangeRobotPicture(RobotDirectionEnum thisEnum) {
+
+        switch (thisEnum) {
+            case NORTH:
                 this.robotImg = new Image("robot2000north.png", 20, 20, true, true);
                 break;
-            case SOUTH :
+            case SOUTH:
                 this.robotImg = new Image("robot2000south.png", 20, 20, true, true);
                 break;
-            case EAST :
+            case EAST:
                 this.robotImg = new Image("robot2000east.png", 20, 20, true, true);
                 break;
-            case WEST :
+            case WEST:
                 this.robotImg = new Image("robot2000west.png", 20, 20, true, true);
                 break;
-            default :
+            default:
                 break;
         }
     }

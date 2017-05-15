@@ -41,5 +41,9 @@ public class RobotState {
         return this.errorCode == RobotCodesEnum.ERROR.getValue();
     }
 
+    public boolean isRobotCarryingObject() {
+        return !this.carriedObject.isEmpty() && !this.carriedObject.equals("()");
+    }
+
 
 }
