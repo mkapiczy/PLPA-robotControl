@@ -29,11 +29,12 @@ public class RobotSprite {
     private boolean isInitialPositionSet = false;
 
     public RobotSprite() {
-        this.robotImg = new Image("robot.png", 15, 15, true, true);
+        this.robotImg = new Image("robot2000.png", 20, 20, true, true);
     }
 
     public void setRobotInitialState(RobotState initialState) {
         this.robotState = initialState;
+        ChangeRobotPicture(initialState.getDirection());
         this.isInitialPositionSet = true;
     }
 
@@ -55,6 +56,7 @@ public class RobotSprite {
             } else if (!this.robotState.getDirection().equals(destinationDirection)) {
                 movementPositions = rotate(destinationDirection);
             }
+
             return movementPositions;
         } else {
             log.error("Before moving robot the initial position needs to be set up!");
@@ -118,6 +120,28 @@ public class RobotSprite {
         gc.setFill(Color.BLACK);
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(5);
+        ChangeRobotPicture(this.getRobotState().getDirection());
+
         gc.drawImage(this.robotImg, tile.getLayoutX(), tile.getLayoutY());
+    }
+
+    public void ChangeRobotPicture(RobotDirectionEnum thisEnum){
+
+        switch (thisEnum){
+            case NORTH :
+                this.robotImg = new Image("robot2000north.png", 20, 20, true, true);
+                break;
+            case SOUTH :
+                this.robotImg = new Image("robot2000south.png", 20, 20, true, true);
+                break;
+            case EAST :
+                this.robotImg = new Image("robot2000east.png", 20, 20, true, true);
+                break;
+            case WEST :
+                this.robotImg = new Image("robot2000west.png", 20, 20, true, true);
+                break;
+            default :
+                break;
+        }
     }
 }
