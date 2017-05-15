@@ -6,6 +6,7 @@ import dk.plpa.gui.floorComponents.FloorRow;
 import dk.plpa.gui.floorComponents.Tile;
 import dk.plpa.scheme.SchemeProcedure;
 import gnu.lists.FVector;
+import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -14,7 +15,13 @@ import java.util.stream.Collectors;
 
 public class FloorPaneMapper {
 
-    public static FloorPane getFloorStateFromScheme() {
+    public static FloorPane createFloor() {
+        FloorPane floor = getFloorStateFromScheme();
+        floor.setPadding(new Insets(25, 25, 25, 25));
+        return floor;
+    }
+
+    private static FloorPane getFloorStateFromScheme() {
         FloorPane floor = new FloorPane();
 
         SchemeProcedure floorProc = new SchemeProcedure("getFactoryFloor");

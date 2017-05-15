@@ -117,7 +117,6 @@ public class AnimationView extends AbstractView {
 
             private void endAnimation() {
                 this.stop();
-                this.
                 setOtherViewsAvailable();
             }
 
