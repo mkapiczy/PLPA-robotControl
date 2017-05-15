@@ -36,7 +36,13 @@
                                        (selfWithError)))
                                  ))
 
-           (turnRight (lambda ()
+         (turnRight (lambda (amountOfSteps)
+                        (if (> amountOfSteps 0)
+                            (send 'turnRight (turnRightOneStep) (- amountOfSteps 1))
+                            (self)
+                            )))
+
+           (turnRightOneStep (lambda ()
                         (display (string-append "Robot turned right from " direction " to " (getNextDirection "RIGHT")))
                         (robot
                          x
@@ -45,7 +51,13 @@
                          errorCode
                          carriedObject)))
 
-           (turnLeft (lambda ()
+         (turnLeft (lambda (amountOfSteps)
+                        (if (> amountOfSteps 0)
+                            (send 'turnLeft (turnLeftOneStep) (- amountOfSteps 1))
+                            (self)
+                            )))
+
+           (turnLeftOneStep (lambda ()
                        (display (string-append "Robot turned left from " direction " to " (getNextDirection "LEFT")))
                        (robot
                         x

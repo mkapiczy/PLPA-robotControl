@@ -32,11 +32,11 @@
 )
 
 (define (TurnRight state noOfSteps)
-    (send 'turnRight state)
+    (send 'turnRight state noOfSteps)
 )
 
 (define (TurnLeft state noOfSteps)
-    (send 'turnLeft state)
+    (send 'turnLeft state noOfSteps)
 )
 
 (define (PickObject state object)
