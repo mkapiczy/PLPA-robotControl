@@ -14,6 +14,13 @@
 
 (define robotState (robot 0 0 "E" 0 '()))
 
+(define (areCommandsLoaded)
+    (if (not (null? commands))
+        #t
+        #f
+    )
+)
+
 (define getNextRobotState
       (lambda ()
               (lambda (proc steps)
