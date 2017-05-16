@@ -28,8 +28,8 @@ public class RobotSprite {
     @Setter(AccessLevel.NONE)
     private boolean isInitialPositionSet = false;
 
-    public RobotSprite() {
-        this.robotImg = new Image("robot2000.png", 20, 20, true, true);
+    public RobotSprite(Image robotImg) {
+        this.robotImg = robotImg;
     }
 
     public void setRobotInitialState(RobotState initialState) {
@@ -38,8 +38,8 @@ public class RobotSprite {
     }
 
     public List<RobotState> moveRobotTo(RobotState destinedPosition) {
+        List<RobotState> movementPositions = new ArrayList<>();
         if (isInitialPositionSet) {
-            List<RobotState> movementPositions = new ArrayList<>();
 
             int destinationX = destinedPosition.getX();
             int destinationY = destinedPosition.getY();
@@ -58,11 +58,10 @@ public class RobotSprite {
                 movementPositions.add(destinedPosition);
             }
 
-            return movementPositions;
         } else {
             log.error("Before moving robot the initial position needs to be set up!");
-            return null;
         }
+        return movementPositions;
     }
 
     private List<RobotState> moveHorizontaly(int currentRobotXPosition, int destinationX) {

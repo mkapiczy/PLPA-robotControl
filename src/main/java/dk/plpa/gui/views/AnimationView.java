@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,7 +63,7 @@ public class AnimationView extends AbstractView {
 
             new AnimationTimer() {
                 private final int animationInterval = 500000000;
-                private RobotSprite robotSprite = new RobotSprite();
+                private RobotSprite robotSprite = new RobotSprite(new Image("robot2000.png", 20, 20, true, true));
                 private long lastUpdate = 0;
                 private int calledSchemeProcedure = 0;
                 private boolean shouldCallNextSchemeProcedure = true;
