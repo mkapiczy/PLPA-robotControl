@@ -34,7 +34,7 @@ public class RobotSprite {
 
     public void setRobotInitialState(RobotState initialState) {
         this.robotState = initialState;
-        ChangeRobotPicture(initialState.getDirection());
+        changeRobotPictureAccordingToRobotDirection(initialState.getDirection());
         this.isInitialPositionSet = true;
     }
 
@@ -122,7 +122,7 @@ public class RobotSprite {
         gc.setFill(Color.BLACK);
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(5);
-        ChangeRobotPicture(this.getRobotState().getDirection());
+        changeRobotPictureAccordingToRobotDirection(this.getRobotState().getDirection());
 
         if (this.getRobotState().isRobotCarryingObject()) {
             drawCarriedObject(gc, tile.getLayoutX(), tile.getLayoutY());
@@ -136,7 +136,7 @@ public class RobotSprite {
         gc.setFill(Color.RED);
     }
 
-    public void ChangeRobotPicture(RobotDirectionEnum thisEnum) {
+    public void changeRobotPictureAccordingToRobotDirection(RobotDirectionEnum thisEnum) {
 
         switch (thisEnum) {
             case NORTH:
