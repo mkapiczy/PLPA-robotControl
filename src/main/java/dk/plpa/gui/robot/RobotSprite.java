@@ -34,7 +34,6 @@ public class RobotSprite {
 
     public void setRobotInitialState(RobotState initialState) {
         this.robotState = initialState;
-        changeRobotPictureAccordingToRobotDirection(initialState.getDirection());
         this.isInitialPositionSet = true;
     }
 
@@ -136,7 +135,7 @@ public class RobotSprite {
         gc.setFill(Color.RED);
     }
 
-    public void changeRobotPictureAccordingToRobotDirection(RobotDirectionEnum thisEnum) {
+    private void changeRobotPictureAccordingToRobotDirection(RobotDirectionEnum thisEnum) {
 
         switch (thisEnum) {
             case NORTH:
