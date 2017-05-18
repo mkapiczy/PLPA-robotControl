@@ -156,14 +156,14 @@
 
 
     (canPickObject (lambda ()
-                     (if (and (null? carriedObject) (equal? 'i (getTile x y)))
+                     (if (and (null? carriedObject) (or (equal? 'i (getTile x y)) (equal? '* (getTile x y))))
                         #t
                         #f
                         )
                      ))
 
     (canDropObject (lambda ()
-                (if (and (not (null? carriedObject)) (equal? 'o (getTile x y)))
+                (if (and (not (null? carriedObject)) (or (equal? 'o (getTile x y)) (equal? '* (getTile x y))))
                     #t
                     #f
                     )
