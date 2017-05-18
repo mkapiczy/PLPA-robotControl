@@ -171,9 +171,8 @@ public class RobotProgrammingView extends AbstractView {
         for (FloorRow row : animationView.getFloor().getRows()) {
             for (Tile tile : row.getTiles())
                 tile.setOnMouseClicked(event -> {
-                    if (tile.getFill().equals(Color.RED)) {
+                    if (tile.getRect().getFill().equals(Color.RED)) {
                         enableOtherViewElements();
-
                         int xPosition = ((GridPane) animationView.getFloor()).getColumnIndex(tile);
                         int yPosition = ((GridPane) animationView.getFloor()).getRowIndex(tile);
                         RobotDirectionEnum direction = chooseDirection();

@@ -136,8 +136,8 @@ public class AnimationView extends AbstractView {
                 private void displayErrorAlert() {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
-                    alert.setHeaderText("Robot reached not allowed state!");
-                    alert.setContentText("Robot reached not allowed state!");
+                    alert.setHeaderText("Robot reached forbidden state!");
+                    alert.setContentText("Robot reached forbidden state!");
                     alert.showAndWait();
                 }
 

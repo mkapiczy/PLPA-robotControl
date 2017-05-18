@@ -49,7 +49,13 @@ public class FloorPaneMapper {
         FloorRow row = new FloorRow();
         for (String tileSign : tileSignList) {
             if (!tileSign.equals("")) {
-                Tile t = new Tile(20, 20, mapTileSignToTheColor(tileSign));
+                String tileLabel = mapTileSignToTileLabel(tileSign);
+                Tile t;
+                if (!tileLabel.equals("")) {
+                    t = new Tile(20, 20, mapTileSignToTheColor(tileSign), tileLabel);
+                } else {
+                    t = new Tile(20, 20, mapTileSignToTheColor(tileSign));
+                }
                 row.addTile(t);
             }
         }
@@ -68,8 +74,24 @@ public class FloorPaneMapper {
             return Color.RED;
         } else if (tileSign.equals("S")) {
             return Color.GREY;
+        } else if (tileSign.equals("i")) {
+            return Color.CHOCOLATE;
+        } else if (tileSign.equals("o")) {
+            return Color.ORANGE;
+        } else if (tileSign.equals("*")) {
+            return Color.BURLYWOOD;
         } else {
             return Color.YELLOW;
+        }
+    }
+
+    private static String mapTileSignToTileLabel(String tileSign) {
+        if (tileSign.equals("i") || tileSign.equals("o")) {
+            return tileSign;
+        } else if (tileSign.equals("*")) {
+            return "i/o";
+        } else {
+            return "";
         }
     }
 }

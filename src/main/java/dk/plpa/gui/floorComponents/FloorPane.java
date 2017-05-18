@@ -27,8 +27,8 @@ public class FloorPane extends GridPane {
         FloorRow row = this.getRows().get(indexOfLastRow);
         for (int tileIndex = 0; tileIndex < row.getNumberOfTiles(); tileIndex++) {
             Tile tile = row.getTile(tileIndex);
-            tile.setStroke(Color.BLACK);
-            tile.setStrokeWidth(1);
+            tile.getRect().setStroke(Color.BLACK);
+            tile.getRect().setStrokeWidth(1);
             this.add(tile, tileIndex, indexOfLastRow);
         }
     }
