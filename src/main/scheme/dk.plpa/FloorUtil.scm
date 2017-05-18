@@ -1,4 +1,5 @@
 ;(include "FloorPlan.scm") ;Uncomment this for testing in PetiteScheme
+(include "../tests/FloorPlanTest1.scm")
 
 
 (define getTile (lambda (x y)
