@@ -1,6 +1,7 @@
 (define factoryFloor (vector
-    (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o '0 '0 '0 'o)
-    (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o '0 '0 '0 'o)
+    (vector 'o 'A 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o '0 '0 '0 'o)
+    (vector 'o 'i 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o '0 '0 '0 'o)
+    (vector 'o 'S 'o 'P 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
@@ -14,7 +15,6 @@
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
-    (vector 'o 'o 'S 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
     (vector 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o 'o)
