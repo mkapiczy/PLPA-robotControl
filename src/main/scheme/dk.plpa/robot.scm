@@ -1,5 +1,5 @@
 ;(include "FloorUtil.scm") ;UNCOMMENT THIS WHEN TESTING FROM PETIT INTERPRETER
-
+;(include "../FloorUtil.scm") 
 (define (robot x y direction errorCode carriedObject)
   (letrec (
            (getX (lambda () x))

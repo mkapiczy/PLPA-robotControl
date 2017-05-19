@@ -6,7 +6,7 @@
 ;Test suite requires (include "../tests/FloorPlanTest1.scm") in FloorUtil
 
 
-(define-test-suite foo
+(define-test-suite floorUtilTestSuite
   (define-test getFactoryFloor-test
     (assert-eqv? (getFactoryFloor) factoryFloor))
   (define-test getTile1-test
@@ -26,4 +26,4 @@
   )
  
 
-(run-test-suite foo)
+(run-test-suite floorUtilTestSuite)
