@@ -1,5 +1,5 @@
-;Test suite requires (include "../tests/FloorPlanTest2.scm") in FloorUtil
-;Test suite requires (include "../Floor.scm") in FloorUtil
+;Test suite requires (include "../tests/FloorPlanTest2.scm") in FloorUtil.scm
+;Test suite requires (include "../FloorUtil.scm") in robot.scm
 ;https://github.com/akeep/rough-draft
 (import  
  (rough-draft unit-test)
