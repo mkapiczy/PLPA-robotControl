@@ -13,21 +13,21 @@ public class SchemeConfigurer {
 
     private List<String> schemeFiles = new ArrayList<>();
 
-    public SchemeConfigurer(){
+    public SchemeConfigurer() {
         this.schemeFiles.add("src/main/scheme/dk.plpa/robot.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/FloorPlan.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/FloorUtil.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/simulation.scm");
         this.schemeFiles.add("src/main/scheme/dk.plpa/factorial.scm");
-}
+    }
 
-    public void configureSchemeEnvironment(){
+    public void configureSchemeEnvironment() {
         registerEnvironment();
         Environment.setCurrent(new Scheme().getEnvironment());
         configureSchemeFiles();
     }
 
-    private void configureSchemeFiles(){
+    private void configureSchemeFiles() {
         this.schemeFiles.forEach(this::loadFileIntoSchemeEnvironment);
     }
 
