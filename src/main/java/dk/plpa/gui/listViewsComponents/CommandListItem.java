@@ -14,6 +14,11 @@ public class CommandListItem {
         this.commandParam = "1";
     }
 
+    public CommandListItem(CommandEnum command, String commandParam) {
+        this.command = command;
+        this.commandParam = commandParam;
+    }
+
     @Override
     public String toString() {
         return this.command.getCommandName();

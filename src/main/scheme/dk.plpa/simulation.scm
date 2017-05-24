@@ -1,4 +1,4 @@
-;(include "robot.scm")
+;(include "../robot.scm")
 
 ;(define commands '((0 8 "E") (MoveForward 8) (TurnLeft 1) (MoveForward 7) (TurnLeft 1) (MoveForward 2) (TurnLeft 1) (PickObject "P1")(TurnLeft 1) (MoveForward 2) (TurnRight 1) (MoveForward 7) (DropObject 1)))
 
