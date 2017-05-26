@@ -1,4 +1,4 @@
-<h1> FPLPA-robotControl </h1>
+<h1> PLPA-robotControl </h1>
 
 <h2> Description </h2>
 
