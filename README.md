@@ -4,8 +4,11 @@
 
 <p>The project was created as a part of the Programming Language Paradigms course at Aarhus University. 
 Its main goal was to design and implement robot control system made for a factory application. 
-Its main purpose was to provide the interface for programming robot behaviour. 
-One of the main project requirements was to use two different programming paradigms: imperative (Java), and functional (Scheme).</p>
+Its main purpose was to provide the interface for programming robot behaviour. </p>
+
+<p>The project was implemented with use of two different programming paradigms: <br>
+- imperative (Java),<br>
+- functional (Scheme).</p>
 
 <p>The system consists of two independent components: Java and Scheme, communicating with each other. The project was designed with focus on proper separation of concerns between this two components. </p>
 
